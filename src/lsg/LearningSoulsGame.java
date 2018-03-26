@@ -196,10 +196,35 @@ public class LearningSoulsGame {
 		System.out.println(maxiHeros.getWeapon().toString());
 	}
 	
+	/**
+	 * méthode permettant de tester les méthodes créées dans Bag
+	 */
+	private void testBag_v1() {
+		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+		maxiHeros.pickUp(dragonSlayerLeggings);
+		maxiHeros.printBag();
+		maxiHeros.pullOut(dragonSlayerLeggings);
+		maxiHeros.printBag();
+	}
+	
+	
+	/**
+	 * méthode permettant de tester les méthodes créées dans Bag
+	 */
+	private void testBag_v2() {
+		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+		RingOfDeath ringOfDeath = new RingOfDeath();
+		maxiHeros.pickUp(dragonSlayerLeggings);
+		maxiHeros.pickUp(ringOfDeath);
+		maxiHeros.equip(dragonSlayerLeggings, 1);
+		maxiHeros.printBag();
+		maxiHeros.equip(ringOfDeath, 0);
+		maxiHeros.printBag();
+	}
+	
 	public static void main (String[] args) {
 		
 		LearningSoulsGame learningSoulsGame = new LearningSoulsGame();
-		learningSoulsGame.play_v5();
-		learningSoulsGame.refresh();
+		learningSoulsGame.testBag_v2();
 	}
 }

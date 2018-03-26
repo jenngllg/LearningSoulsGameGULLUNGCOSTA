@@ -1,8 +1,9 @@
 package lsg.weapons;
 
+import lsg.bags.Collectible;
 import lsg.consumables.repair.RepairKit;
 
-public class Weapon {
+public class Weapon implements Collectible {
 	
 	protected String name; //nom humanis� de l'arme
 	protected int minDamage; //dommages minimum pouvant être causés
@@ -73,6 +74,11 @@ public class Weapon {
 	
 	public void repairWith(RepairKit kit) { 
 		this.setDurability(this.getDurability() + kit.use());
+	}
+	
+	@Override
+	public int getWeight() {
+		return 2;
 	}
 	
 }

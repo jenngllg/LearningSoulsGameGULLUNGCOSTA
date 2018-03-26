@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lsg.armor.ArmorItem;
+import lsg.bags.Collectible;
 import lsg.buffs.Ring;
+import lsg.consumables.Consumable;
 
 //class Hero
-//toutes les variables sont privées
+//toutes les variables sont privï¿½es
 public class Hero extends Character {
 
 	public ArmorItem[] armor;
 	public Ring[] rings;
-	private static final int MAX_ARMOR_PIECES = 3; //static car commun à toutes les instances
+	private static final int MAX_ARMOR_PIECES = 3; //static car commun ï¿½ toutes les instances
 	private static final int MAX_RINGS = 2; 
 
-	// constructeur par défaut
+	// constructeur par dï¿½faut
 	public Hero() {
 		this.armor = new ArmorItem[MAX_ARMOR_PIECES];
 		this.rings = new Ring[MAX_RINGS];
@@ -34,23 +36,23 @@ public class Hero extends Character {
 		this.rings = rings;
 	}
 
-	// constructeur à un paramètre
+	// constructeur ï¿½ un paramï¿½tre
 	public Hero(String name) {
 		this(); // appel au constructeur
 		this.name = name; // rename
 	}
 
 	/**
-	 * équiper le héros d'une pièce d'armure
+	 * ï¿½quiper le hï¿½ros d'une piï¿½ce d'armure
 	 */
 	public void setArmorItem(ArmorItem piece, int slot) {
 		if (slot < MAX_ARMOR_PIECES || slot > 0) {
-			this.armor[slot - 1] = piece; // l'index du tableau commence à 0 donc on doit enlever 1
+			this.armor[slot - 1] = piece; // l'index du tableau commence ï¿½ 0 donc on doit enlever 1
 		}
 	}
 
 	/**
-	 * retourne le total d'armure du héros
+	 * retourne le total d'armure du hï¿½ros
 	 * @return float
 	 */
 	public float getTotalArmor() {
@@ -64,8 +66,8 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * renvoie une chaine contenant la description de l'armure totale portée par le
-	 * héros
+	 * renvoie une chaine contenant la description de l'armure totale portï¿½e par le
+	 * hï¿½ros
 	 * 
 	 * @return String
 	 */
@@ -84,14 +86,14 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * méthode affichant les statistiques d'une armure en console
+	 * mï¿½thode affichant les statistiques d'une armure en console
 	 */
 	public void printArmorStats() {
 		System.out.println(this.armorToString());
 	}
 
 	/**
-	 * renvoie toutes les pièces d'armure portées
+	 * renvoie toutes les piï¿½ces d'armure portï¿½es
 	 * @return ArmorItem[]
 	 */
 	protected ArmorItem[] getArmorItem() {
@@ -113,16 +115,16 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * équiper le héros d'une bague
+	 * ï¿½quiper le hï¿½ros d'une bague
 	 */
 	public void setRing(Ring ring, int slot) {
 		if (slot < MAX_RINGS || slot > 0) {
-			this.rings[slot - 1] = ring; // l'index du tableau commence à 0 donc on doit enlever 1
+			this.rings[slot - 1] = ring; // l'index du tableau commence ï¿½ 0 donc on doit enlever 1
 		}
 	}
 	
 	/**
-	 * retourne le total de buff du héros
+	 * retourne le total de buff du hï¿½ros
 	 * 
 	 * @return float
 	 */
@@ -138,8 +140,8 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * renvoie une chaine contenant la description des bagues portées par le
-	 * héros
+	 * renvoie une chaine contenant la description des bagues portï¿½es par le
+	 * hï¿½ros
 	 * 
 	 * @return String
 	 */
@@ -158,14 +160,14 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * méthode affichant les statistiques d'une bague en console
+	 * mï¿½thode affichant les statistiques d'une bague en console
 	 */
 	public void printRingStats() {
 		System.out.println(this.buffToString());
 	}
 
 	/**
-	 * renvoie toutes les bagues portées
+	 * renvoie toutes les bagues portï¿½es
 	 * @return Ring[]
 	 */
 	protected Ring[] getRing() {
@@ -176,9 +178,33 @@ public class Hero extends Character {
 				baguesPorteesArrayList.add(this.rings[i]);
 			}
 		}
-		// convertion de l'arraylist en array de ring de la taille de l'arraylist
+		// conversion de l'arraylist en array de ring de la taille de l'arraylist
 		Ring[] piecesPortees = baguesPorteesArrayList.toArray(new Ring[baguesPorteesArrayList.size()]);
 		return piecesPortees;
+	}
+	
+	/**
+	 * mÃ©thode permettant d'Ã©quiper l'armure passÃ©e en paramÃ¨tre dans le sac et l'Ã©quipe (donc la retire du sac)
+	 * ne fait rien si l'armure n'est pas dans le sac
+	 */
+	public void equip(ArmorItem item, int slot) {
+		Collectible c = this.bag.pop(item);
+		if (c != null) {
+			this.armor[slot] = (ArmorItem)c;
+			System.out.println(this.getName() + " pulls out " + this.armor[slot].toString() + " and equips it !");
+		}
+	}
+	
+	/**
+	 * mÃ©thode permettant d'Ã©quiper la bague passÃ©e en paramÃ¨tre dans le sac et l'Ã©quipe (donc la retire du sac)
+	 * ne fait rien si bague n'est pas dans le sac
+	 */
+	public void equip(Ring ring, int slot) {
+		Collectible c = this.bag.pop(ring);
+		if (c != null) {
+			this.rings[slot] = (Ring)c;
+			System.out.println(this.getName() + " pulls out " + this.rings[slot].toString() + " and equips it !");
+		}
 	}
 	
 }

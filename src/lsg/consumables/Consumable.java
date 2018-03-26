@@ -1,6 +1,8 @@
 package lsg.consumables;
 
-public class Consumable {
+import lsg.bags.Collectible;
+
+public class Consumable implements Collectible{
 
 	private String name;
 	private int capacity;
@@ -29,8 +31,8 @@ public class Consumable {
 	}
 	
 	/**
-	 * fait passer la capacité à 0
-	 * @return int montant total de la capacité
+	 * fait passer la capacitï¿½ ï¿½ 0
+	 * @return int montant total de la capacitï¿½
 	 */
 	public int use() {
 		int capacity = this.getCapacity();
@@ -39,10 +41,15 @@ public class Consumable {
 	}
 	
 	/**
-	 * retourne une chaine de la forme "nom [capacité statistique point(s)]"
+	 * retourne une chaine de la forme "nom [capacitï¿½ statistique point(s)]"
 	 * @return string
 	 */
 		public String toString() {
 		return this.getName() + " [" + this.getCapacity() + " " + this.getStat() + " point(s)] ";
+	}
+
+	@Override
+	public int getWeight() {
+		return 1;
 	}
 }

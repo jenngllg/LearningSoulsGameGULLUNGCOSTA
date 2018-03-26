@@ -1,11 +1,13 @@
 package lsg.armor;
 
-public class ArmorItem {
+import lsg.bags.Collectible;
 
-	protected String name; //nom de la pièce
+public class ArmorItem implements Collectible {
+
+	protected String name; //nom de la piï¿½ce
 	protected float armorValue; //valeur d'armure de l'item 
 
-//constructeur à 2 paramètres permettant de nommer et fixer la valeur d'armure d'une pièce lors de son instanciation
+//constructeur ï¿½ 2 paramï¿½tres permettant de nommer et fixer la valeur d'armure d'une piï¿½ce lors de son instanciation
 	public ArmorItem(String name, float armorValue) {
 		this.name = name;
 		this.armorValue = armorValue;
@@ -22,7 +24,7 @@ public class ArmorItem {
 	}
 	
 	/**
-	 * méthode retournant les statistiques d'une armure
+	 * mÃ©thode retournant les statistiques d'une armure
 	 * @return String
 	 */
 	public String toString() {
@@ -30,10 +32,15 @@ public class ArmorItem {
 	}
 	
 	/**
-	 * méthode affichant les statistiques d'une armure
+	 * mÃ©thode affichant les statistiques d'une armure
 	 */
 	public void printStats() {
 		System.out.println(this.toString());
+	}
+
+	@Override
+	public int getWeight() {
+		return 4;
 	}
 	
 }

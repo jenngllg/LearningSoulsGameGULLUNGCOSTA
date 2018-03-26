@@ -1,5 +1,8 @@
 package lsg.characters;
 
+import lsg.bags.Bag;
+import lsg.bags.Collectible;
+import lsg.bags.SmallBag;
 import lsg.consumables.Consumable;
 import lsg.consumables.drinks.Drink;
 import lsg.consumables.food.Food;
@@ -17,6 +20,7 @@ public abstract class Character {
 	protected Dice dice; //dé
 	protected Weapon weapon; //référence vers l'arme équipée
 	protected Consumable consumable; // référence vers le consommable équipé
+	protected Bag bag; //référence vers le sac équipé
 
 	protected static final String LIFE_STAT_STRING = "life";
 	protected static final String STAM_STAT_STRING = "stamina";
@@ -93,6 +97,7 @@ public abstract class Character {
 		this.stamina = 50;
 		this.maxStamina = 50;
 		this.dice = new Dice(101);
+		this.bag = new SmallBag(); 
 	}
 	
 	
@@ -154,7 +159,7 @@ public abstract class Character {
 			damage = Math.round(((precision/100f) * (weapon.getMaxDamage() - weapon.getMinDamage())) + weapon.getMinDamage());
 		}
 		if (this.stamina >= weapon.getStamCost()) {
-			this.stamina -= weapon.getStamCost(); //si le perso donne un coup en ayant la stamina n�cessaire, la stamina d�croit du cout de la stamina de l'arme
+			this.stamina -= weapon.getStamCost(); //si le perso donne un coup en ayant la stamina nécessaire, la stamina d�croit du cout de la stamina de l'arme
 		}
 		else {
 			float pourcentage = this.stamina/weapon.getStamCost()*100; //on calcule le pourcentage de stamina possédé
@@ -250,5 +255,96 @@ public abstract class Character {
 	public void consume() {
 		this.use(this.getConsumable());
 	}
+	
+	/**
+	 * méthode permettant d'ajouter un item dans le sac du personnage
+	 */
+	public void pickUp(Collectible item) {
+		if (this.bag.getCapacity() - item.getWeight() >= item.getWeight()) {
+			this.bag.push(item);
+			System.out.println(this.getName() + " picks up " + item.toString());
+		}
+	}
+	
+	/**
+	 * méthode permettant de supprimer un item du sac du personnage
+	 * @return collectible
+	 */
+	public Collectible pullOut(Collectible item) {
+		if (this.bag.contains(item)) {
+			this.bag.pop(item);
+			System.out.println(this.getName() + " pulls out " + item.toString());
+			return item;
+		}
+		return null;
+	}
+	
+	/**
+	 * méthode permettant d'afficher le contenu du sac
+	 */
+	public void printBag() {
+		System.out.println(this.bag.toString()); 
+	}
+	
+	/**
+	 * méthode permettant de retourner la taille du sac du personnage
+	 * @return int capacité totale du sac
+	 */
+	public int getBagCapacity() {
+		return this.bag.getCapacity();
+	}
+	
+	/**
+	 * méthode permettant de retourner le nombre de slots encore disponibles dans le sac du personnage
+	 * @return int capacité restante
+	 */
+	public int getBagWeight() {
+		return this.bag.getCapacity() - this.bag.getWeight();
+	}
+	
+	/**
+	 * méthode permettant de retourner un tableau contenant les items contenus dans le sac du personnage
+	 */
+	public Collectible[] getBagItems() {
+		return this.bag.getItems();
+	}
+	
+	/**
+	 * méthode permettant de remplacer le sac du personnage par le sac passé en paramètre
+	 * les items sont déplacés dans le nouveau dans la limite de sa capacité
+	 */
+	public Bag setBag(Bag bag) {
+		Bag oldBag = this.bag;
+		Bag.transfer(oldBag, bag);
+		this.bag = bag;
+		System.out.println(this.getName() + " changes  " + this.bag.getClass().getSimpleName() + " for " + bag.getClass().getSimpleName());
+		return oldBag;
+	}
+	
+	/**
+	 * méthode permettant d'équiper l'arme passée en paramètre dans le sac et l'équipe (donc la retire du sac)
+	 * ne fait rien si l'arme n'est pas dans le sac
+	 */
+	public void equip(Weapon weapon) {
+		Collectible c = this.bag.pop(weapon);
+		if (c != null) {
+			this.weapon = (Weapon)c;
+			System.out.println(this.getName() + " pulls out " + this.weapon.toString());
+		}
+	}
+	
+	/**
+	 * méthode permettant d'équiper le consumable passée en paramètre dans le sac et l'équipe (donc le retire du sac)
+	 * ne fait rien si le consumable n'est pas dans le sac
+	 */
+	public void equip(Consumable consumable) {
+		Collectible c = this.bag.pop(consumable);
+		if (c != null) {
+			this.consumable = (Consumable)c;
+			System.out.println(this.getName() + " pulls out " + this.consumable.toString());
+		}
+	}
+	
+	//on aurait aussi pu utiliser une seule méthode pour les 2 méthodes au dessus (equip(Collectible collectible) avec des instanceof) 
 	
 }
