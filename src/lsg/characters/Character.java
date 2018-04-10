@@ -379,7 +379,7 @@ public abstract class Character {
 	 * methode permettant d'afficher le contenu du sac
 	 */
 	public void printBag() {
-		System.out.println(this.bag.toString()); 
+		System.out.println("BAG : " + this.bag.toString()); 
 	}
 	
 	/**
@@ -460,20 +460,19 @@ public abstract class Character {
 			action = " eats ";
 		}
 		else if (type instanceof RepairKit) {
-			action = " takes ";
+			action = " uses ";
 		}
 		
 		if (this.bag.contains(type) == true) {
 			//fouille le sac et prend le premier item du type voulu
 			System.out.println(this.getName() + action + "FAST :");
 			//consomme l'item
-			System.out.println(this.getName() + action + type.toString());
 			this.use(type);
-			type.use();
 			
 			if (type.getCapacity() == 0) {
 				//enleve le consumable du sac
 				this.pullOut(type);
+				
 			}			
 			return type; 
 		}

@@ -340,8 +340,6 @@ public class LearningSoulsGame {
 		maxiHeros.printArmorStats();
 		maxiHeros.printWeapon();
 		maxiHeros.printBag();
-		
-		
 	}
 
 	public static void main(String[] args) {
