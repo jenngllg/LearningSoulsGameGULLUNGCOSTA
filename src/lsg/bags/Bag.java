@@ -12,32 +12,55 @@ import lsg.weapons.Sword;
 
 public class Bag {
 
-	private int capacity; //capacité du sac
-	private int weight; //nombre de kg utilises
+	/**
+	 * capacite du sac
+	 */
+	private int capacity;
+	/**
+	 * nombre de kg utilises
+	 */
+	private int weight;
+	/**
+	 * items presents dans le sac
+	 */
 	private HashSet<Collectible> items; 
 	
-	
+	/**
+	 * constructeur d'un sac
+	 * @param capacite du sac
+	 */
 	public Bag(int capacity) {
 		this.items = new HashSet<>();
 		this.capacity = capacity;
 	}
 
-
+	/**
+	 * accesseur
+	 * @return capacite du sac
+	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
+	/**
+	 * accesseur
+	 * @return poids du sac
+	 */
 	public int getWeight() {
 		return weight;
 	}
 	
+	/**
+	 * mutateur
+	 * @param poids du sac
+	 */
 	private void setWeight(int weight) {
 		this.weight = weight;
 	}
 	
 	
 	/**
-	 * méthode ajoutant un Collectible au sac si la place restante est suffisante
+	 * methode ajoutant un Collectible au sac si la place restante est suffisante
 	 */
 	public void push(Collectible item) {
 		if (item.getWeight() <= this.getCapacity() - this.getWeight()) {
@@ -48,8 +71,8 @@ public class Bag {
 	}
 	
 	/**
-	 * méthode qui retire un item du sac
-	 * @return Collectible
+	 * methode qui retire un item du sac
+	 * @return item enleve
 	 */
 	public Collectible pop(Collectible item) {
 		if (items.contains(item)) {
@@ -62,8 +85,8 @@ public class Bag {
 	
 	
 	/**
-	 * méthode qui indique si l'item passé en paramètre se trouve bien dans le sac
-	 * @return boolean 
+	 * methode qui indique si l'item passe en parametre se trouve bien dans le sac
+	 * @return true si l'item est present, false sinon 
 	 */
 	public boolean contains(Collectible item) {
 		if (items.contains(item)) {
@@ -74,16 +97,16 @@ public class Bag {
 	
 	
 	/**
-	 * méthode retournant les items du sac
-	 * @return Collectible[] 
+	 * methode retournant les items du sac
+	 * @return items presents dans le sac
 	 */
 	public Collectible[] getItems() {
 		return items.toArray(new Collectible[items.size()]);
 	}
 	
 	/**
-	 * méthode affichant le contenu d'un sac
-	 * @return String
+	 * methode affichant le contenu d'un sac
+	 * @return contenu du sac
 	 */
 	public String toString() {
 		String affichage = "";
@@ -102,7 +125,7 @@ public class Bag {
 	}
 	
 	/**
-	 * méthode transférant le contenu du sac source vers le sac de destination (dans la limite de capacité de ce dernier)
+	 * methode transferant le contenu du sac source vers le sac de destination (dans la limite de capacite de ce dernier)
 	 */
 	public static void transfer(Bag from, Bag into) {
 		for(Collectible collectible : from.getItems()) {
@@ -114,6 +137,7 @@ public class Bag {
 	}
 	
 	public static void main (String[] args) {
+		
 		SmallBag pochetteChanel = new SmallBag();
 		MediumBag sacMichaelKors = new MediumBag();
 		BlackWitchVeil blackWitchVeil = new BlackWitchVeil();
@@ -122,6 +146,7 @@ public class Bag {
 		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
 		RingedKnightArmor ringedKnightArmor1 = new RingedKnightArmor();
 		RingedKnightArmor ringedKnightArmor2 = new RingedKnightArmor();
+		
 		sacMichaelKors.push(blackWitchVeil);
 		sacMichaelKors.push(hamburger);
 		sacMichaelKors.push(basicSword);
@@ -156,6 +181,7 @@ public class Bag {
 		System.out.println(pochetteChanel.toString());
 		
 		transfer(sacMichaelKors, pochetteChanel);
+		
 		System.out.println("Après transfert :" + System.lineSeparator()); 
 		System.out.println(pochetteChanel.toString());
 		System.out.println(sacMichaelKors.toString());

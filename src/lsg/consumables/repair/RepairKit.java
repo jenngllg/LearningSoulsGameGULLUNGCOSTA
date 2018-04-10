@@ -5,14 +5,17 @@ import lsg.weapons.Weapon;
 
 public class RepairKit extends Consumable {
 
+	/**
+	 * constructeur par defaut d'un kit de reparation
+	 */
 	public RepairKit() {
 		super("Repair Kit", 10, Weapon.DURABILITY_STAT_STRING);
 	}
 	
 	/**
 	 * surcharge de la méthode use() de consumable
-	 * enlève un point à la capacité
-	 * @return int montant total de la capacité
+	 * enleve un point à la capacite
+	 * @return montant total de la capacite
 	 */
 	@Override
 	public int use() {

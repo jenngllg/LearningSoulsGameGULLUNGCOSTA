@@ -4,17 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 import lsg.buffs.Talisman;
 
-//class Monster
 public class Monster extends Character {
 	
+	/**
+	 * talismans portes par le monstre
+	 */
 	public Talisman[] talismans;
+	/**
+	 * nombre de monstres instancies
+	 */
 	private static int INSTANCE_COUNT;
+	/**
+	 * epaisseur de la peau (protection)
+	 */
 	private float skinThickness; 
+	/**
+	 * nombre de talismans pouvant etre portes par le monstre
+	 */
 	private static final int MAX_TALISMAN = 1; 
 	
-	//constructeur par défaut
+	/**
+	 * constructeur par defaut
+	 */
 	public Monster() {
-		Monster.INSTANCE_COUNT++; //on ajoute 1 au nombre de monstres
+		/**
+		 * ajout de 1 au nombre de monstres lors de l'instanciation d'un monstre
+		 */
+		Monster.INSTANCE_COUNT++; 
 		this.name = "Monster_" + INSTANCE_COUNT;
 		this.talismans = new Talisman[MAX_TALISMAN];
 		this.life = 100;
@@ -24,40 +40,53 @@ public class Monster extends Character {
 		this.skinThickness = 20;
 	}
 	
-	
+	/**
+	 * accesseur
+	 * @return epaisseur de la peau
+	 */
 	public float getSkinThickness() {
 		return skinThickness;
 	}
 
-
+	/**
+	 * mutateur
+	 * @param epaisseur de la peau
+	 */
 	protected void setSkinThickness(float skinThickness) {
 		this.skinThickness = skinThickness;
 	}
 
-	//constructeur à un paramètre
+	/** 
+	 * constructeur a un parametre
+	 * @param nom du monstre
+	 */
 	public Monster(String name) {
-		this(); //appel au constructeur
-		this.name = name; //rename
+		/**
+		 * appel au constructeur
+		 */
+		this(); 
+		this.name = name;
 	}
 
-	@Override //sécurité et information en cas de suppression de la méthode abstraite
+	@Override //securite et information en cas de suppression de la methode abstraite
 	protected float computeProtection() {
 		return this.getSkinThickness();
 	}
 	
 	/**
-	 * équiper le héros d'un talisman
+	 * mutateur
+	 * @param talisman a equiper
+	 * @param endroit ou equiper le talisman
 	 */
 	public void setTalisman(Talisman talisman, int slot) {
 		if (slot < MAX_TALISMAN || slot > 0) {
-			this.talismans[slot - 1] = talisman; // l'index du tableau commence à 0 donc on doit enlever 1
+			this.talismans[slot - 1] = talisman; // l'index du tableau commence a 0 donc on doit enlever 1
 		}
 	}
 	
 	/**
-	 * retourne le total de buff du héros
-	 * 
-	 * @return float
+	 * retourne le total de buff du monstre
+	 * @return total de buff du monstre
 	 */
 	@Override
 	public float getTotalBuff() {
@@ -71,10 +100,9 @@ public class Monster extends Character {
 	}
 	
 	/**
-	 * renvoie une chaine contenant la description des talismans portées par le
-	 * héros
-	 * 
-	 * @return String
+	 * renvoie une chaine contenant la description des talismans portes par le
+	 * heros
+	 * @return String de la forme BUFF 1:talisman1(valeur1) TOTAL:total
 	 */
 	public String buffToString() {
 		String buffComplet = "";
@@ -91,15 +119,15 @@ public class Monster extends Character {
 	}
 
 	/**
-	 * méthode affichant les statistiques d'un talisman en console
+	 * methode affichant les statistiques d'un talisman en console
 	 */
 	public void printTalismanStats() {
 		System.out.println(this.buffToString());
 	}
 
 	/**
-	 * renvoie tous les talismans portés
-	 * @return Talisman[]
+	 * renvoie tous les talismans portes par le monstre
+	 * @return talismans portes par le monstre
 	 */
 	protected Talisman[] getTalisman() {
 		List<Talisman> talismansPortesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
@@ -109,7 +137,7 @@ public class Monster extends Character {
 				talismansPortesArrayList.add(this.talismans[i]);
 			}
 		}
-		// convertion de l'arraylist en array de talismans de la taille de l'arraylist
+		// convert de l'arraylist en array de talismans de la taille de l'arraylist
 		Talisman[] talismansPortes = talismansPortesArrayList.toArray(new Talisman[talismansPortesArrayList.size()]);
 		return talismansPortes;
 	}

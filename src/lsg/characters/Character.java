@@ -12,16 +12,44 @@ import lsg.weapons.Weapon;
 
 public abstract class Character {
 
-	protected String name; //nom du personnage
-	protected int life; //points de vie restants
-	protected int maxLife; //nombre maximal de points de vie
-	protected int stamina; //force restante
-	protected int maxStamina; //force maximale
-	protected Dice dice; //dé
-	protected Weapon weapon; //référence vers l'arme équipée
-	protected Consumable consumable; // référence vers le consommable équipé
-	protected Bag bag; //référence vers le sac équipé
+	/**
+	 * nom du personnage
+	 */
+	protected String name; 
+	/**
+	 * points de vie restants
+	 */
+	protected int life; 
+	/**
+	 * nombre maximal de points de vie
+	 */
+	protected int maxLife;
+	/**
+	 * force restante
+	 */
+	protected int stamina; 
+	/**
+	 * force maximale
+	 */
+	protected int maxStamina;
+	/**
+	 * de
+	 */
+	protected Dice dice; 
+	/**
+	 * reference vers l'arme equipee
+	 */
+	protected Weapon weapon;
+	/**
+	 * reference vers le consommable equipe
+	 */
+	protected Consumable consumable;
+	/**
+	 * reference vers le sac equipe
+	 */
+	protected Bag bag;
 
+	
 	protected static final String LIFE_STAT_STRING = "life";
 	protected static final String STAM_STAT_STRING = "stamina";
 	protected static final String PROTECT_STAT_STRING = "protection";
@@ -32,64 +60,121 @@ public abstract class Character {
 	protected static final String TOTAL_STAT_STRING = "TOTAL";
 
 
-	//getters et setters générés automatiquement
+	/**
+	 * accesseur
+	 * @return vie du personnage
+	 */
 	public int getLife() {
 		return life;
 	}
 
+	/**
+	 * mutateur
+	 * @param vie du personnage
+	 */
 	protected void setLife(int life) {
 		this.life = life;
 	}
 
+	/**
+	 * accesseur
+	 * @return maximum de vie du personnage
+	 */
 	public int getMaxLife() {
 		return maxLife;
 	}
 
+	/**
+	 * mutateur
+	 * @param maximum de vie du personnage
+	 */
 	protected void setMaxLife(int maxLife) {
 		this.maxLife = maxLife;
 	}
 
+	/**
+	 * accesseur
+	 * @return stamina du personnage
+	 */
 	public int getStamina() {
 		return stamina;
 	}
 
+	/**
+	 * mutateur
+	 * @param stamina du personnage
+	 */
 	protected void setStamina(int stamina) {
 		this.stamina = stamina;
 	}
 
+	/**
+	 * accesseur
+	 * @return maximum de stamina du personnage
+	 */
 	public int getMaxStamina() {
 		return maxStamina;
 	}
 
+	/**
+	 * mutateur
+	 * @param maximum de stamina du personnage
+	 */
 	protected void setMaxStamina(int maxStamina) {
 		this.maxStamina = maxStamina;
 	}
 
+	/**
+	 * accesseur
+	 * @return nom du personnage
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * mutateur
+	 * @param nom du personnage
+	 */
 	protected void setName(String name) {
 		this.name = name;
 	}
 	
+	/** 
+	 * accesseur
+	 * @return arme du personnage
+	 */
 	public Weapon getWeapon() {
 		return weapon;
 	}
 
+	/**
+	 * mutateur
+	 * @param arme du personnage
+	 */
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
 	
+	/**
+	 * accesseur
+	 * @return consommable du personnage
+	 */
 	public Consumable getConsumable() {
 		return consumable;
 	}
 
+	/**
+	 * mutateur
+	 * @param consommable du personnage
+	 */
 	public void setConsumable(Consumable consumable) {
 		this.consumable = consumable;
 	}
 	
-	//constructeur par défaut
+	/**
+	 * constructeur par défaut
+	 */
 	public Character() {
 		this.name = "Ynovator";
 		this.life = 100;
@@ -101,22 +186,28 @@ public abstract class Character {
 	}
 	
 	
-	//constructeur à un paramètre
+	/**
+	 * constructeur à un paramètre
+	 * @param nom du personnage
+	 */
 	public Character(String name) {
-		this(); //appel au constructeur
-		this.name = name; //rename
+		/**
+		 * appel au constructeur
+		 */
+		this(); 
+		this.name = name; 
 	}
 	
 	/**
-	 * méthode retournant les statistiques d'un personnage
-	 * @return String
+	 * methode retournant les statistiques d'un personnage
+	 * @return chaine de la forme [Personnage] Nom LIFE:x STAMINA:x PROTECTION:x BUFF:x (ALIVE/DEAD)
 	 */
 	public String toString() {
 		return String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s", "[" + this.getClass().getSimpleName() + "]", this.getName(),  Character.LIFE_STAT_STRING + ":" + this.getLife(), Character.STAM_STAT_STRING + ":" + this.getStamina(), Character.PROTECT_STAT_STRING + ":" + this.computeProtection(), Character.BUFF_STAT_STRING + ":" + this.getTotalBuff(), "(" + (isAlive()? Character.ALIVE_STAT_STRING : Character.DEAD_STAT_STRING) + ")");
 	}
 	
 	/**
-	 *  méthode affichant les statistiques d'un héros en console
+	 *  methode affichant les statistiques d'un heros en console
 	 */
 	public void printStats() {
 		System.out.println(this.toString());
@@ -124,24 +215,28 @@ public abstract class Character {
 	
 	
 	/**
-	 * méthode permettant de savoir si le personnage est vivant
-	 * @return boolean
+	 * methode permettant de savoir si le personnage est vivant
+	 * @return true si il est vivant, false sinon
 	 */
 	protected boolean isAlive() {
 		return this.getLife() > 0; 
 	}
 	
+	/**
+	 * methode renvoyant le total de la valeur des buffs d'un personnage
+	 * @return total de la valeur des buffs
+	 */
 	public abstract float getTotalBuff();
 	
 	/**
-	 * méthode représentant la protection du personnage
-	 * @return float
+	 * methode representant la protection du personnage
+	 * @return protection du personnage
 	 */
 	abstract protected float computeProtection();
 	
 	/**
-	 * méthode permettant d'attaquer avec une arme
-	 * @return int
+	 * methode permettant d'attaquer avec une arme
+	 * @return degats portes par le personnage 
 	 */
 	private int attackWith(Weapon weapon) {
 		int damage;
@@ -171,8 +266,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant d'attaquer 
-	 * @return int (degats r�alis�s)
+	 * methode permettant d'attaquer 
+	 * @return degats realises
 	 */
 	public int attack() {
 		if (this.isAlive()) {
@@ -182,8 +277,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant d'attaquer avec une arme
-	 * @return int (dégats reçus)
+	 * methode calculant le nb de points de vie retires au personnage en fonction des degats recus
+	 * @return degats recus
 	 */
 	public int getHitWith(int value) {
 		if (computeProtection() >= 100) {
@@ -196,7 +291,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant de boire une boisson, ce qui remonte le niveau de stamina
+	 * methode permettant de boire une boisson, ce qui remonte le niveau de stamina
 	 */
 	private void drink(Drink boisson) {
 		System.out.println(this.getName() + " drinks " + boisson.toString());
@@ -211,7 +306,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant de manger de la nourriture, ce qui remonte le niveau de vie
+	 * methode permettant de manger de la nourriture, ce qui remonte le niveau de vie
 	 */
 	private void eat(Food nourriture) {
 		System.out.println(this.getName() + " eats " + nourriture.toString());
@@ -226,7 +321,7 @@ public abstract class Character {
 	}
 
 	/**
-	 * méthode faisant appel à drink() ou eat() en fonction du type de consommable
+	 * methode faisant appel à drink() ou eat() en fonction du type de consommable
 	 */
 	public void use(Consumable consumable) {
 		if (consumable instanceof Food) {
@@ -240,7 +335,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant de réparer son arme, ce qui augmente sa durability
+	 * methode permettant de réparer son arme, ce qui augmente sa durability
 	 */
 	public void repairWeaponWith(RepairKit kit) {
 		System.out.println(this.getName() + " repairs " + this.weapon.toString() + " with " + kit.toString());
@@ -250,14 +345,14 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant de consommer le consommable équipé
+	 * methode permettant de consommer le consommable équipé
 	 */
 	public void consume() {
 		this.use(this.getConsumable());
 	}
 	
 	/**
-	 * méthode permettant d'ajouter un item dans le sac du personnage
+	 * methode permettant d'ajouter un item dans le sac du personnage
 	 */
 	public void pickUp(Collectible item) {
 		if (this.bag.getCapacity() - item.getWeight() >= item.getWeight()) {
@@ -267,8 +362,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant de supprimer un item du sac du personnage
-	 * @return collectible
+	 * methode permettant de supprimer un item du sac du personnage
+	 * @return item supprime
 	 */
 	public Collectible pullOut(Collectible item) {
 		if (this.bag.contains(item)) {
@@ -280,38 +375,40 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant d'afficher le contenu du sac
+	 * methode permettant d'afficher le contenu du sac
 	 */
 	public void printBag() {
 		System.out.println(this.bag.toString()); 
 	}
 	
 	/**
-	 * méthode permettant de retourner la taille du sac du personnage
-	 * @return int capacité totale du sac
+	 * methode permettant de retourner la taille du sac du personnage
+	 * @return capacite totale du sac
 	 */
 	public int getBagCapacity() {
 		return this.bag.getCapacity();
 	}
 	
 	/**
-	 * méthode permettant de retourner le nombre de slots encore disponibles dans le sac du personnage
-	 * @return int capacité restante
+	 * methode permettant de retourner le nombre de slots encore disponibles dans le sac du personnage
+	 * @return capacite restante
 	 */
 	public int getBagWeight() {
 		return this.bag.getCapacity() - this.bag.getWeight();
 	}
 	
 	/**
-	 * méthode permettant de retourner un tableau contenant les items contenus dans le sac du personnage
+	 * methode permettant de retourner un tableau contenant les items contenus dans le sac du personnage
+	 * @return items contenus dans le sac
 	 */
 	public Collectible[] getBagItems() {
 		return this.bag.getItems();
 	}
 	
 	/**
-	 * méthode permettant de remplacer le sac du personnage par le sac passé en paramètre
-	 * les items sont déplacés dans le nouveau dans la limite de sa capacité
+	 * methode permettant de remplacer le sac du personnage par le sac passe en parametre
+	 * les items sont deplaces dans le nouveau dans la limite de sa capacite
+	 * @return l'ancien sac
 	 */
 	public Bag setBag(Bag bag) {
 		Bag oldBag = this.bag;
@@ -322,7 +419,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant d'équiper l'arme passée en paramètre dans le sac et l'équipe (donc la retire du sac)
+	 * methode permettant d'equiper l'arme passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'arme n'est pas dans le sac
 	 */
 	public void equip(Weapon weapon) {
@@ -334,7 +431,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * méthode permettant d'équiper le consumable passée en paramètre dans le sac et l'équipe (donc le retire du sac)
+	 * methode permettant d'equiper le consumable passe en parametre dans le sac et l'equipe (donc le retire du sac)
 	 * ne fait rien si le consumable n'est pas dans le sac
 	 */
 	public void equip(Consumable consumable) {

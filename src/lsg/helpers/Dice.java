@@ -4,39 +4,51 @@ import java.util.ArrayList;
 import java.util.Collections;
 import  java.util.Random;
 
-//classe Dé
+//classe Dï¿½
 public class Dice {
 	
-	private int faces; //nombre de faces du dé
-	private Random random; //nombre aléatoire
+	/**
+	 * nombre de faces du de
+	 */
+	private int faces; 
+	/** 
+	 * nombre aleatoire
+	 */
+	private Random random; 
 	
-	//constructeur permettant de choisir le nombre de faces du dé
+	/**
+	 * constructeur d'un de
+	 * @param nombre de faces du de
+	 */
 	public Dice(int faces) {
 		this.faces = faces;
 	}
 	
 	
-	//résultat du lancer de dé
+	/**
+	 * methode permettant de lancer le de
+	 * @return resultat du lancer de de
+	 */
 	public int roll() {
 		random = new Random();
 		return random.nextInt(faces);
 	}
 	
-	
+	//test du lancer de de
 	public static void main (String[] args) {
 		
-		//création du dé à 50 faces
-		Dice dice = new Dice(50); //50 exclu, donc de 0 à 49 
+		//creation du de a 50 faces
+		Dice dice = new Dice(50); //50 exclu, donc de 0 a 49 
 		
-		//création de l'arrayList
+		//creation de l'arrayList
 		ArrayList<Integer> arrayList = new ArrayList<Integer>();
 		
-		//ajout des lancers à l'arrayList
+		//ajout des lancers a l'arrayList
 		for (int i = 0; i < 500; i++) {
 			arrayList.add(dice.roll());
 		}
 		
-		//résultats
+		//affichage des resultats en console
 		System.out.println(arrayList);
 		System.out.println("Max : " + Collections.max(arrayList));
 		System.out.println("Min : " + Collections.min(arrayList));

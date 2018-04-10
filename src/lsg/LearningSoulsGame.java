@@ -23,6 +23,9 @@ public class LearningSoulsGame {
 	private Scanner scanner;
 	public static String BULLET_POINT = "\u2219";
 	
+	/** 
+	 * constructeur permettant de creer un heros, un monstre et d'instancier un scanner
+	 */
 	public LearningSoulsGame() {
 		maxiHeros = new Hero("MaxiHeros");
 		jennyMonster = new Monster("JennyMonstre");
@@ -30,7 +33,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'afficher le titre du jeu dans la console 
+	 * methode permettant d'afficher le titre du jeu dans la console 
 	 */
 	public void title() {
 		System.out.println("################################");
@@ -39,7 +42,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'initialiser les armes 
+	 * methode permettant d'initialiser les armes 
 	 */
 	public void init_v1() {
 		maxiHeros.setWeapon(new Sword());
@@ -47,7 +50,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'initialiser l'armure
+	 * methode permettant d'initialiser l'armure
 	 */
 	public void init_v2() {
 		init_v1();
@@ -55,7 +58,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'initialiser les armes 
+	 * methode permettant d'initialiser les armes 
 	 */
 	public void init_v3() {
 		init_v2();
@@ -63,7 +66,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'initialiser les buffs 
+	 * methode permettant d'initialiser les buffs 
 	 */
 	public void init_v4() {
 		init_v2();
@@ -73,7 +76,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'initialiser un consommable
+	 * methode permettant d'initialiser un consommable
 	 */
 	public void init_v5() {
 		title();
@@ -82,7 +85,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'afficher les statistiques de chaque personnage
+	 * methode permettant d'afficher les statistiques de chaque personnage
 	 */
 	private void refresh() {
 		maxiHeros.printStats();
@@ -92,7 +95,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'afficher les statistiques de l'attaque
+	 * methode permettant d'afficher les statistiques de l'attaque
 	 */
 	private void attack(lsg.characters.Character attaquant, lsg.characters.Character victime) {
 		int attaque = attaquant.attack();
@@ -101,14 +104,14 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant d'afficher le gagnant du combat
+	 * methode permettant d'afficher le gagnant du combat
 	 */
 	private void getWinner(lsg.characters.Character heros, lsg.characters.Character monstre) {
 		System.out.println("---" + (heros.getLife() > 0 && heros.getStamina() > 0 ? heros.getName() : monstre.getName()) + " WINS !!! ---");
 	}
 	
 	/**
-	 * méthode initialisant la partie & lançant le combat
+	 * methode initialisant la partie & lancant le combat
 	 */
 	public void play_v1() {
 		init_v1();
@@ -116,7 +119,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode équipant le héros avec une armure & lançant le combat
+	 * methode equipant le heros avec une armure & lancant le combat
 	 */
 	public void play_v2() {
 		init_v2();
@@ -124,7 +127,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode équipant le héros avec une armure & lançant le combat
+	 * methode equipant le heros avec une armure & lancant le combat
 	 */
 	public void play_v3() {
 		init_v3();
@@ -132,7 +135,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode équipant les personnages avec des buffs & lançant le combat
+	 * methode equipant les personnages avec des buffs & lancant le combat
 	 */
 	public void play_v4() {
 		init_v4();
@@ -140,7 +143,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode équipant les personnages avec des buffs & lançant le combat
+	 * methode equipant les personnages avec des buffs & lancant le combat
 	 */
 	public void play_v5() {
 		init_v5();
@@ -148,7 +151,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant de lancer le combat
+	 * methode permettant de lancer le combat
 	 */
 	private void fight1v1() {
 		refresh();
@@ -171,7 +174,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant de créer un Héros épuisé
+	 * methode permettant de creer un Heros epuise
 	 */
 	private void createExhaustedHero() {
 		maxiHeros = new Hero("Fatigué");
@@ -182,7 +185,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant de consommer
+	 * methode permettant de consommer
 	 */
 	private void aTable() {
 		MenuBestOfV4 menu = new MenuBestOfV4();
@@ -197,7 +200,7 @@ public class LearningSoulsGame {
 	}
 	
 	/**
-	 * méthode permettant de tester les méthodes créées dans Bag
+	 * methode permettant de tester les methodes creees dans Bag
 	 */
 	private void testBag_v1() {
 		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
@@ -209,7 +212,7 @@ public class LearningSoulsGame {
 	
 	
 	/**
-	 * méthode permettant de tester les méthodes créées dans Bag
+	 * methode permettant de tester les methodes creees dans Bag
 	 */
 	private void testBag_v2() {
 		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();

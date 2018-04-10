@@ -8,16 +8,25 @@ import lsg.bags.Collectible;
 import lsg.buffs.Ring;
 import lsg.consumables.Consumable;
 
-//class Hero
-//toutes les variables sont priv�es
 public class Hero extends Character {
 
+	/**
+	 * pieces d'armures equipees
+	 */
 	public ArmorItem[] armor;
+	/**
+	 * bagues equipees
+	 */
 	public Ring[] rings;
-	private static final int MAX_ARMOR_PIECES = 3; //static car commun � toutes les instances
+	/**
+	 * static car commun a toutes les instances
+	 */
+	private static final int MAX_ARMOR_PIECES = 3; 
 	private static final int MAX_RINGS = 2; 
 
-	// constructeur par d�faut
+	/**
+	 * constructeur par defaut
+	 */
 	public Hero() {
 		this.armor = new ArmorItem[MAX_ARMOR_PIECES];
 		this.rings = new Ring[MAX_RINGS];
@@ -28,22 +37,33 @@ public class Hero extends Character {
 		this.maxStamina = 50;
 	}
 
+	/**
+	 * accesseur
+	 * @return bagues portees par le heros
+	 */
 	protected Ring[] getRings() {
 		return rings;
 	}
 
+	/**
+	 * mutateur
+	 * @param bagues
+	 */
 	protected void setRings(Ring[] rings) {
 		this.rings = rings;
 	}
 
-	// constructeur � un param�tre
+	/**
+	 * constructeur a un parametre
+	 * @param nom du heros
+	 */
 	public Hero(String name) {
 		this(); // appel au constructeur
 		this.name = name; // rename
 	}
 
 	/**
-	 * �quiper le h�ros d'une pi�ce d'armure
+	 * methode qui equipe le heros d'une piece d'armure
 	 */
 	public void setArmorItem(ArmorItem piece, int slot) {
 		if (slot < MAX_ARMOR_PIECES || slot > 0) {
@@ -52,8 +72,8 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * retourne le total d'armure du h�ros
-	 * @return float
+	 * methode retournant le total d'armure du heros
+	 * @return somme des valeurs de pieces d'armures portees par le heros
 	 */
 	public float getTotalArmor() {
 		float sommeArmures = 0;
@@ -66,10 +86,9 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * renvoie une chaine contenant la description de l'armure totale port�e par le
-	 * h�ros
-	 * 
-	 * @return String
+	 * renvoie une chaine contenant la description de l'armure totale portee par le
+	 * heros
+	 * @return String de type ARMOR 1:armure1(valeur1) 2:armor2(valeur2) 3:armor3(valeur3) TOTAL:total
 	 */
 	public String armorToString() {
 		String armureComplete = "";
@@ -86,15 +105,15 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * m�thode affichant les statistiques d'une armure en console
+	 * methode affichant les statistiques d'une armure en console
 	 */
 	public void printArmorStats() {
 		System.out.println(this.armorToString());
 	}
 
 	/**
-	 * renvoie toutes les pi�ces d'armure port�es
-	 * @return ArmorItem[]
+	 * renvoie toutes les pieces d'armure portees par le heros
+	 * @return pieces portees par le heros
 	 */
 	protected ArmorItem[] getArmorItem() {
 		List<ArmorItem> piecesPorteesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
@@ -104,18 +123,24 @@ public class Hero extends Character {
 				piecesPorteesArrayList.add(this.armor[i]);
 			}
 		}
-		// convertion de l'arraylist en array d'armoritem de la taille de l'arraylist
+		// convert de l'arraylist en array d'armoritem de la taille de l'arraylist
 		ArmorItem[] piecesPortees = piecesPorteesArrayList.toArray(new ArmorItem[piecesPorteesArrayList.size()]);
 		return piecesPortees;
 	}
 
+	/**
+	 * methode qui renvoie une valeur permettant de calculer l'amoindrissement des degats subis par le heros
+	 * @return protection du personnage
+	 */
 	@Override
 	protected float computeProtection() {
 		return this.getTotalArmor();
 	}
 
 	/**
-	 * �quiper le h�ros d'une bague
+	 * mutateur
+	 * @param bague
+	 * @param endroit auquel placer la bague
 	 */
 	public void setRing(Ring ring, int slot) {
 		if (slot < MAX_RINGS || slot > 0) {
@@ -124,9 +149,8 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * retourne le total de buff du h�ros
-	 * 
-	 * @return float
+	 * methode qui retourne le total de buff du heros
+	 * @return total des valeurs de buff du heros
 	 */
 	@Override
 	public float getTotalBuff() {
@@ -140,9 +164,8 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * renvoie une chaine contenant la description des bagues port�es par le
-	 * h�ros
-	 * 
+	 * renvoie une chaine contenant la description des bagues portees par le
+	 * heros
 	 * @return String
 	 */
 	public String buffToString() {
@@ -160,15 +183,15 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * m�thode affichant les statistiques d'une bague en console
+	 * methode affichant les statistiques d'une bague en console
 	 */
 	public void printRingStats() {
 		System.out.println(this.buffToString());
 	}
 
 	/**
-	 * renvoie toutes les bagues port�es
-	 * @return Ring[]
+	 * renvoie toutes les bagues portees
+	 * @return bagues portees
 	 */
 	protected Ring[] getRing() {
 		List<Ring> baguesPorteesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
@@ -184,7 +207,7 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * méthode permettant d'équiper l'armure passée en paramètre dans le sac et l'équipe (donc la retire du sac)
+	 * methode permettant d'equiper l'armure passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'armure n'est pas dans le sac
 	 */
 	public void equip(ArmorItem item, int slot) {
@@ -196,7 +219,7 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * méthode permettant d'équiper la bague passée en paramètre dans le sac et l'équipe (donc la retire du sac)
+	 * methode permettant d'equiper la bague passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si bague n'est pas dans le sac
 	 */
 	public void equip(Ring ring, int slot) {
