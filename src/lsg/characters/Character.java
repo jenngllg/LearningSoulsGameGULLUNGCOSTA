@@ -58,6 +58,7 @@ public abstract class Character {
 	protected static final String ALIVE_STAT_STRING = "ALIVE";
 	protected static final String DEAD_STAT_STRING = "DEAD";
 	protected static final String TOTAL_STAT_STRING = "TOTAL";
+	protected static final String WEAPON_STAT_STRING = "WEAPON";
 
 
 	/**
@@ -414,7 +415,7 @@ public abstract class Character {
 		Bag oldBag = this.bag;
 		Bag.transfer(oldBag, bag);
 		this.bag = bag;
-		System.out.println(this.getName() + " changes  " + this.bag.getClass().getSimpleName() + " for " + bag.getClass().getSimpleName());
+		System.out.println(this.getName() + " changes  " + oldBag.getClass().getSimpleName() + " for " + this.bag.getClass().getSimpleName());
 		return oldBag;
 	}
 	
@@ -443,5 +444,74 @@ public abstract class Character {
 	}
 	
 	//on aurait aussi pu utiliser une seule méthode pour les 2 méthodes au dessus (equip(Collectible collectible) avec des instanceof) 
+	
+	/**
+	 * methode permettant de consommer instantanement et sans choisir le premier consommable du bon type trouve
+	 * @param type de consommable voulu
+	 * @return consommable utilise, ou null si aucun consommable du type n'a ete trouve
+	 */
+	private Consumable fastUseFirst(Consumable type) {
+		String action = "";
+		
+		if (type instanceof Drink) {
+			action = " drinks ";
+		}
+		else if (type instanceof Food) {
+			action = " eats ";
+		}
+		else if (type instanceof RepairKit) {
+			action = " takes ";
+		}
+		
+		if (this.bag.contains(type) == true) {
+			//fouille le sac et prend le premier item du type voulu
+			System.out.println(this.getName() + action + "FAST :");
+			//consomme l'item
+			System.out.println(this.getName() + action + type.toString());
+			this.use(type);
+			type.use();
+			
+			if (type.getCapacity() == 0) {
+				//enleve le consumable du sac
+				this.pullOut(type);
+			}			
+			return type; 
+		}
+		return null;
+	}
+	
+	/**
+	 * consomme la premiere boisson trouvee dans le sac
+	 * @param boisson
+	 * @return boisson 
+	 */
+	public Drink fastDrink(Drink drink) {
+		this.fastUseFirst(drink);
+		return drink;
+	}
+	
+	/**
+	 * consomme la premiere nourriture trouvee dans le sac
+	 * @param nourriture
+	 * @return nourriture 
+	 */
+	public Food fastEat(Food food) {
+		this.fastUseFirst(food);
+		return food;
+	}
+	
+	/**
+	 * consomme la premiere charge du kit trouve dans le sac
+	 * @param kit
+	 * @return kit 
+	 */
+	public RepairKit fastRepair(RepairKit repairKit) {
+		this.fastUseFirst(repairKit);
+		return repairKit;
+	}
+	
+	public void printWeapon() {
+		System.out.println(Character.WEAPON_STAT_STRING + " : " + this.weapon.toString());
+	}
 	
 }

@@ -52,7 +52,6 @@ public class Bag {
 	
 	/**
 	 * mutateur
-	 * @param poids du sac
 	 */
 	private void setWeight(int weight) {
 		this.weight = weight;
@@ -82,8 +81,7 @@ public class Bag {
 		}
 		return null;
 	}
-	
-	
+		
 	/**
 	 * methode qui indique si l'item passe en parametre se trouve bien dans le sac
 	 * @return true si l'item est present, false sinon 
@@ -94,7 +92,6 @@ public class Bag {
 		}
 		return false;
 	}
-	
 	
 	/**
 	 * methode retournant les items du sac

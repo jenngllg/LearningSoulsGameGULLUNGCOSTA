@@ -6,7 +6,6 @@ import java.util.List;
 import lsg.armor.ArmorItem;
 import lsg.bags.Collectible;
 import lsg.buffs.Ring;
-import lsg.consumables.Consumable;
 
 public class Hero extends Character {
 
@@ -67,7 +66,7 @@ public class Hero extends Character {
 	 */
 	public void setArmorItem(ArmorItem piece, int slot) {
 		if (slot < MAX_ARMOR_PIECES || slot > 0) {
-			this.armor[slot - 1] = piece; // l'index du tableau commence � 0 donc on doit enlever 1
+			this.armor[slot - 1] = piece; // l'index du tableau commence a 0 donc on doit enlever 1
 		}
 	}
 
@@ -101,7 +100,7 @@ public class Hero extends Character {
 			}
 			armureComplete += String.format("%-20s", i+1 + ":" + piece);
 		}
-		return Character.ARMOR_STAT_STRING + armureComplete + Character.TOTAL_STAT_STRING + this.getTotalArmor();
+		return String.format("%-15s %-15s", Character.ARMOR_STAT_STRING.toUpperCase(), armureComplete + Character.TOTAL_STAT_STRING + ":" + this.getTotalArmor());
 	}
 
 	/**
@@ -179,7 +178,7 @@ public class Hero extends Character {
 			}
 			buffComplet += String.format("%-20s", i+1 + ":" + ring);
 		}
-		return Character.BUFF_STAT_STRING + buffComplet + Character.TOTAL_STAT_STRING + this.getTotalBuff();
+		return String.format("%-15s", Character.BUFF_STAT_STRING.toUpperCase() + buffComplet + Character.TOTAL_STAT_STRING + this.getTotalBuff());
 	}
 
 	/**

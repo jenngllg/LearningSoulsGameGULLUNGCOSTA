@@ -2,11 +2,11 @@ __________________________________________________________________________ TP1 _
 
 
 6. 
-La visibilité optimale serait protected car il n'y a pour l'instant qu'un seul package dans lequel se trouvent nos classes Monster et Hero et notre main qui fait appel à ces classes, et qu'elle serait accessible à toute classe qui hérite de Hero.
+La visibilite optimale serait protected car il n'y a pour l'instant qu'un seul package dans lequel se trouvent nos classes Monster et Hero et notre main qui fait appel a ces classes, et qu'elle serait accessible a toute classe qui herite de Hero.
 
 
 7.
-La visibilité optimale serait public car notre main dans le package lsg fera appel aux classes du package characters ou se trouvent les classes Hero et Monster.
+La visibilite optimale serait public car notre main dans le package lsg fera appel aux classes du package characters ou se trouvent les classes Hero et Monster.
 
 
 __________________________________________________________________________ TP2 __________________________________________________________________________________________________
@@ -14,12 +14,12 @@ __________________________________________________________________________ TP2 _
 1. 
 getClass() retourne un tableau contenant les objets de la classe
 getSimpleName() retourne le nom de la classe
-Du coup, this.getClass().getSimpleName() retourne le nom de la classe de l'objet utilisé
+Du coup, this.getClass().getSimpleName() retourne le nom de la classe de l'objet utilise
 
-On doit passer les membres de private à protected car on n'y avait pas accès en dehors de la classe Character. Protected prend en compte les extensions (Hero et Monster extends Character).
+On doit passer les membres de private a protected car on n'y avait pas acces en dehors de la classe Character. Protected prend en compte les extensions (Hero et Monster extends Character).
 
 6. 
-La durabilité de l'épée diminue de un à chaque fois que tapent le monstre et le héros. C'est normal, car on a instancié une seule épée. 
+La durabilite de l'epee diminue de un a chaque fois que tapent le monstre et le heros. C'est normal, car on a instancie une seule epee. 
 
 __________________________________________________________________________ TP3 __________________________________________________________________________________________________
 
@@ -27,13 +27,13 @@ __________________________________________________________________________ TP3 _
 Nous avons mis le get en public et le set en protected
 
 4.
-Les classes Hero et Monster présentent une erreur "the type Hero/Monster must implement the inherited abstract method Character.computeProtection()" car la méthode est déclarée abstraite dans la classe mère (Character, devenue abstraite par la suite car elle possède une méthode abstraite), mais pas définie dans les classes qui héritent de cette dernière (Hero/Monster). 
+Les classes Hero et Monster presentent une erreur "the type Hero/Monster must implement the inherited abstract method Character.computeProtection()" car la methode est declaree abstraite dans la classe mere (Character, devenue abstraite par la suite car elle possede une methode abstraite), mais pas definie dans les classes qui heritent de cette derniere (Hero/Monster). 
 
 __________________________________________________________________________ TP4 __________________________________________________________________________________________________
 
 3.
 Nous n'avons plus besoin de l'attribut menu car MenuBestOfV3 est un HashSet.
 
-HashSet : It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. => l'ordre s'ajout des éléments n'est pas garanti, et leur position n'est pas toujours la même
+HashSet : It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. => l'ordre s'ajout des elements n'est pas garanti, et leur position n'est pas toujours la meme
 
-LinkedHashSet : This implementation differs from HashSet in that it maintains a doubly-linked list running through all of its entries. This linked list defines the iteration ordering, which is the order in which elements were inserted into the set (insertion-order). => l'ordre des éléments est gardé car chaque élément est lié à l'élément se trouvant avant et à celui se trouvant après lui-même
+LinkedHashSet : This implementation differs from HashSet in that it maintains a doubly-linked list running through all of its entries. This linked list defines the iteration ordering, which is the order in which elements were inserted into the set (insertion-order). => l'ordre des elements est garde car chaque element est lie a l'element se trouvant avant et a celui se trouvant apres lui-meme
