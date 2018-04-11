@@ -251,13 +251,13 @@ public class LearningSoulsGame {
 		maxiHeros.printBag();
 		System.out.println("");
 
-		maxiHeros.fastDrink(whisky);
+		maxiHeros.fastDrink();
 		maxiHeros.printBag();
-		maxiHeros.fastEat(hamburger);
+		maxiHeros.fastEat();
 		maxiHeros.printBag();
 
 		for (int i = 0; i < 10; i++) {
-			maxiHeros.fastRepair(repairKit);
+			maxiHeros.fastRepair();
 			maxiHeros.printBag();
 		}
 
@@ -280,9 +280,9 @@ public class LearningSoulsGame {
 		maxiHeros.setBag(smallBag);
 		
 		//le heros ramasse les items
+		maxiHeros.pickUp(shotGun);
 		maxiHeros.pickUp(dragonSlayerLeggings);
 		maxiHeros.pickUp(ringedKnightArmor);
-		maxiHeros.pickUp(shotGun);
 		System.out.println();
 		
 		//affichage de ce qu'il y a dans le sac
@@ -302,13 +302,15 @@ public class LearningSoulsGame {
 		RepairKit repairKit1 = new RepairKit();
 		RepairKit repairKit2 = new RepairKit();
 		
+		
 		//le heros ramasse les items
 		maxiHeros.pickUp(coffee);
 		maxiHeros.pickUp(hamburger);
 		maxiHeros.pickUp(whisky);
 		maxiHeros.pickUp(repairKit1);
 		maxiHeros.pickUp(repairKit2);
-		
+		System.out.println();
+
 		//affichage de ce qu'il y a dans le sac
 		maxiHeros.printBag();
 		
@@ -321,9 +323,9 @@ public class LearningSoulsGame {
 		
 		System.out.println();
 		System.out.println("--- ACTION ---");
-		maxiHeros.fastDrink(whisky);
+		maxiHeros.fastDrink();
 		System.out.println();
-		maxiHeros.fastEat(hamburger);
+		maxiHeros.fastEat();
 		
 		System.out.println();
 		maxiHeros.equip(shotGun);
@@ -332,7 +334,7 @@ public class LearningSoulsGame {
 		maxiHeros.equip(dragonSlayerLeggings, 0);
 		System.out.println();
 
-		maxiHeros.fastRepair(repairKit1);
+		maxiHeros.fastRepair();
 		
 		System.out.println();
 		System.out.println("--- APRES ---");

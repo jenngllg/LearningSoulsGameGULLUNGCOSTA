@@ -452,31 +452,42 @@ public abstract class Character {
 	 */
 	private Consumable fastUseFirst(Consumable type) {
 		String action = "";
-		
-		if (type instanceof Drink) {
-			action = " drinks ";
-		}
-		else if (type instanceof Food) {
-			action = " eats ";
-		}
-		else if (type instanceof RepairKit) {
-			action = " uses ";
-		}
-		
-		if (this.bag.contains(type) == true) {
-			//fouille le sac et prend le premier item du type voulu
-			System.out.println(this.getName() + action + "FAST :");
-			//consomme l'item
-			this.use(type);
+		Consumable item = null; //initialisation du consommable
+		for (int i = 0; i < this.bag.getItems().length && item == null; i++) { //cette boucle s'arrete quand elle trouve le consommable approprie
+			if (!(this.bag.getItems()[i] instanceof Consumable)) {  //si l'objet trouve n'est pas un consommable (arme, par ex)
+				continue; //continue la boucle jusqu'a trouver
+			}
 			
-			if (type.getCapacity() == 0) {
-				//enleve le consumable du sac
-				this.pullOut(type);
-				
-			}			
-			return type; 
+			item = (Consumable)this.bag.getItems()[i];	
+			
+			if (type instanceof Drink && item instanceof Drink) {
+				action = " drinks ";
+			}
+			else if (type instanceof Food  && item instanceof Food) {
+				action = " eats ";
+			}
+			else if (type instanceof RepairKit  && item instanceof RepairKit) {
+				action = " uses ";
+			}
+			else {
+				item = null; //si nous avons un consommable non Drink, non Food et non RepairKit => continue la boucle pour trouver l'item voulu
+			}
 		}
-		return null;
+		
+		if (item == null) return null; //si dans le sac aucun element ne convient, ne fait pas ce qu'il y a en dessous
+		
+		//fouille le sac et prend le premier item du type voulu
+		System.out.println(this.getName() + action + "FAST :");
+		
+		//consomme l'item
+		this.use(item);
+		
+		if (item.getCapacity() == 0) {
+			//enleve le consumable du sac
+			this.pullOut(item);
+		}			
+		
+		return item; 
 	}
 	
 	/**
@@ -484,9 +495,9 @@ public abstract class Character {
 	 * @param boisson
 	 * @return boisson 
 	 */
-	public Drink fastDrink(Drink drink) {
-		this.fastUseFirst(drink);
-		return drink;
+	public Drink fastDrink() {
+		return (Drink)this.fastUseFirst(new Drink("triche", 1, "1"));
+		//on fait ceci pour recuperer la classe de l'objet cree
 	}
 	
 	/**
@@ -494,9 +505,9 @@ public abstract class Character {
 	 * @param nourriture
 	 * @return nourriture 
 	 */
-	public Food fastEat(Food food) {
-		this.fastUseFirst(food);
-		return food;
+	public Food fastEat() {
+		return (Food)this.fastUseFirst(new Food("triche", 1, "1"));
+		//on fait ceci pour recuperer la classe de l'objet cree
 	}
 	
 	/**
@@ -504,9 +515,9 @@ public abstract class Character {
 	 * @param kit
 	 * @return kit 
 	 */
-	public RepairKit fastRepair(RepairKit repairKit) {
-		this.fastUseFirst(repairKit);
-		return repairKit;
+	public RepairKit fastRepair() {
+		return (RepairKit)this.fastUseFirst(new RepairKit());
+		//on fait ceci pour recuperer la classe de l'objet cree
 	}
 	
 	public void printWeapon() {
