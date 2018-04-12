@@ -6,6 +6,7 @@ import java.util.List;
 import lsg.armor.ArmorItem;
 import lsg.bags.Collectible;
 import lsg.buffs.Ring;
+import lsg.exceptions.NoBagException;
 
 public class Hero extends Character {
 
@@ -195,7 +196,7 @@ public class Hero extends Character {
 	protected Ring[] getRing() {
 		List<Ring> baguesPorteesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
 																			// dynamique)
-		for (int i = 1; i <= this.rings.length; i++) {
+		for (int i = 0; i < this.rings.length; i++) {
 			if (this.rings[i] != null) {
 				baguesPorteesArrayList.add(this.rings[i]);
 			}
@@ -208,8 +209,10 @@ public class Hero extends Character {
 	/**
 	 * methode permettant d'equiper l'armure passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'armure n'est pas dans le sac
+	 * @throws NoBagException 
 	 */
-	public void equip(ArmorItem item, int slot) {
+	public void equip(ArmorItem item, int slot) throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		Collectible c = this.bag.pop(item);
 		if (c != null) {
 			this.armor[slot] = (ArmorItem)c;
@@ -220,13 +223,41 @@ public class Hero extends Character {
 	/**
 	 * methode permettant d'equiper la bague passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si bague n'est pas dans le sac
+	 * @throws NoBagException 
 	 */
-	public void equip(Ring ring, int slot) {
+	public void equip(Ring ring, int slot) throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		Collectible c = this.bag.pop(ring);
 		if (c != null) {
 			this.rings[slot] = (Ring)c;
 			System.out.println(this.getName() + " pulls out " + this.rings[slot].toString() + " and equips it !");
 		}
+	}
+	
+	/**
+	 * renvoie une chaine contenant la description des bagues totale portees par le
+	 * heros
+	 * @return String de type RINGS 1:[bague1, valeur1] 2:[bague2, valeur2]
+	 */
+	public String ringToString() {
+		String bagueComplete = "";
+		String ring = "";
+		for (int i = 0; i < this.rings.length; i++) {
+			if (this.rings[i] != null) {
+				ring = this.rings[i].toString();
+			} else {
+				ring = "empty";
+			}
+			bagueComplete += String.format("%-20s", i+1 + ":" + ring);
+		}
+		return String.format("%-15s %-15s", Character.RING_STAT_STRING.toUpperCase(), bagueComplete);
+	}
+	
+	/**
+	 * methode affichant les statistiques des bagues portees en console
+	 */
+	public void printRings() {
+		System.out.println(this.ringToString());
 	}
 	
 }

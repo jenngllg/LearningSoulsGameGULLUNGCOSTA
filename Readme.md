@@ -34,6 +34,10 @@ __________________________________________________________________________ TP4 _
 3.
 Nous n'avons plus besoin de l'attribut menu car MenuBestOfV3 est un HashSet.
 
-HashSet : It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. => l'ordre s'ajout des elements n'est pas garanti, et leur position n'est pas toujours la meme
+HashSet : It makes no guarantees as to the iteration order of the set; in particular, it does not guarantee that the order will remain constant over time. => l'ordre d'ajout des elements n'est pas garanti, et leur position n'est pas toujours la meme
 
 LinkedHashSet : This implementation differs from HashSet in that it maintains a doubly-linked list running through all of its entries. This linked list defines the iteration ordering, which is the order in which elements were inserted into the set (insertion-order). => l'ordre des elements est garde car chaque element est lie a l'element se trouvant avant et a celui se trouvant apres lui-meme
+
+__________________________________________________________________________ TP6 __________________________________________________________________________________________________
+
+2. Une exception java.lang.NullPointerException apparait car weapon est null et l'exception n'est pas geree dans attackWith(weapon) (dans la condition if (weapon.isBroken())) => at lsg.characters.Character.attackWith(Character.java:245)

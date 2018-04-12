@@ -7,6 +7,14 @@ import lsg.consumables.Consumable;
 import lsg.consumables.drinks.Drink;
 import lsg.consumables.food.Food;
 import lsg.consumables.repair.RepairKit;
+import lsg.exceptions.BagFullException;
+import lsg.exceptions.ConsumeEmptyException;
+import lsg.exceptions.ConsumeNullException;
+import lsg.exceptions.ConsumeRepairNullWeaponException;
+import lsg.exceptions.NoBagException;
+import lsg.exceptions.StaminaEmptyException;
+import lsg.exceptions.WeaponBrokenException;
+import lsg.exceptions.WeaponNullException;
 import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
@@ -54,6 +62,7 @@ public abstract class Character {
 	protected static final String STAM_STAT_STRING = "stamina";
 	protected static final String PROTECT_STAT_STRING = "protection";
 	protected static final String ARMOR_STAT_STRING = "armor";
+	protected static final String RING_STAT_STRING = "rings";
 	protected static final String BUFF_STAT_STRING = "buff";
 	protected static final String ALIVE_STAT_STRING = "ALIVE";
 	protected static final String DEAD_STAT_STRING = "DEAD";
@@ -238,12 +247,15 @@ public abstract class Character {
 	/**
 	 * methode permettant d'attaquer avec une arme
 	 * @return degats portes par le personnage 
+	 * @throws WeaponNullException 
+	 * @throws WeaponBrokenException 
+	 * @throws StaminaEmptyException 
 	 */
-	private int attackWith(Weapon weapon) {
+	private int attackWith(Weapon weapon) throws WeaponNullException, WeaponBrokenException, StaminaEmptyException {
 		int damage;
-		if (weapon.isBroken()) {
-			return 0;
-		}
+		if (weapon == null) { throw new WeaponNullException(); }
+		if (weapon.isBroken()) { throw new WeaponBrokenException(weapon); 		}
+		if (this.stamina == 0) { throw new StaminaEmptyException(); }
 		int precision = this.dice.roll();
 		if (precision == 0) {
 			damage = weapon.getMinDamage();
@@ -269,8 +281,11 @@ public abstract class Character {
 	/**
 	 * methode permettant d'attaquer 
 	 * @return degats realises
+	 * @throws WeaponNullException 
+	 * @throws WeaponBrokenException 
+	 * @throws StaminaEmptyException 
 	 */
-	public int attack() {
+	public int attack() throws WeaponNullException, WeaponBrokenException, StaminaEmptyException {
 		if (this.isAlive()) {
 			return this.attackWith(this.getWeapon());
 		}
@@ -293,8 +308,13 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de boire une boisson, ce qui remonte le niveau de stamina
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
 	 */
-	private void drink(Drink boisson) {
+	private void drink(Drink boisson) throws ConsumeNullException, ConsumeEmptyException {
+		if (boisson == null) {
+			throw new ConsumeNullException();
+		}
 		System.out.println(this.getName() + " drinks " + boisson.toString());
 		int sommeStamina = this.getStamina() + boisson.use();
 		System.out.println("Après utilisation : " + boisson.toString());
@@ -308,8 +328,13 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de manger de la nourriture, ce qui remonte le niveau de vie
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
 	 */
-	private void eat(Food nourriture) {
+	private void eat(Food nourriture) throws ConsumeNullException, ConsumeEmptyException {
+		if (nourriture == null) {
+			throw new ConsumeNullException();
+		}
 		System.out.println(this.getName() + " eats " + nourriture.toString());
 		int sommeVie = this.getLife() + nourriture.use();
 		System.out.println("Après utilisation : " + nourriture.toString());
@@ -323,8 +348,14 @@ public abstract class Character {
 
 	/**
 	 * methode faisant appel à drink() ou eat() en fonction du type de consommable
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws ConsumeRepairNullWeaponException 
 	 */
-	public void use(Consumable consumable) {
+	public void use(Consumable consumable) throws ConsumeNullException, ConsumeEmptyException, ConsumeRepairNullWeaponException {
+		if (consumable == null) {
+			throw new ConsumeNullException();
+		}
 		if (consumable instanceof Food) {
 			this.eat((Food)consumable);
 		}
@@ -332,13 +363,19 @@ public abstract class Character {
 			this.drink((Drink)consumable);
 		}
 		else if (consumable instanceof RepairKit)
-			this.repairWeaponWith((RepairKit)consumable);
+			try {
+				this.repairWeaponWith((RepairKit)consumable);
+			} catch (WeaponNullException e) {
+				throw new ConsumeRepairNullWeaponException(consumable);
+			}
 	}
 	
 	/**
 	 * methode permettant de réparer son arme, ce qui augmente sa durability
+	 * @throws WeaponNullException 
 	 */
-	public void repairWeaponWith(RepairKit kit) {
+	public void repairWeaponWith(RepairKit kit) throws WeaponNullException {
+		if (this.weapon == null) { throw new WeaponNullException(); }
 		System.out.println(this.getName() + " repairs " + this.weapon.toString() + " with " + kit.toString());
 		int sommeDurability = this.weapon.getDurability() + kit.use();
 		System.out.println("Après utilisation : " + kit.toString());
@@ -347,15 +384,21 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de consommer le consommable équipé
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws ConsumeRepairNullWeaponException 
 	 */
-	public void consume() {
+	public void consume() throws ConsumeNullException, ConsumeEmptyException, ConsumeRepairNullWeaponException {
 		this.use(this.getConsumable());
 	}
 	
 	/**
 	 * methode permettant d'ajouter un item dans le sac du personnage
+	 * @throws NoBagException 
+	 * @throws BagFullException 
 	 */
-	public void pickUp(Collectible item) {
+	public void pickUp(Collectible item) throws NoBagException, BagFullException {
+		if (this.bag == null) { throw new NoBagException(); }
 		if (this.bag.getCapacity() - item.getWeight() >= item.getWeight()) {
 			this.bag.push(item);
 			System.out.println(this.getName() + " picks up " + item.toString());
@@ -365,8 +408,10 @@ public abstract class Character {
 	/**
 	 * methode permettant de supprimer un item du sac du personnage
 	 * @return item supprime
+	 * @throws NoBagException 
 	 */
-	public Collectible pullOut(Collectible item) {
+	public Collectible pullOut(Collectible item) throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		if (this.bag.contains(item)) {
 			this.bag.pop(item);
 			System.out.println(this.getName() + " pulls out " + item.toString());
@@ -374,35 +419,54 @@ public abstract class Character {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * accesseur
+	 * @return sac du character
+	 */
+	public Bag getBag() {
+		return bag;
+	}
+
 	/**
 	 * methode permettant d'afficher le contenu du sac
 	 */
 	public void printBag() {
-		System.out.println("BAG : " + this.bag.toString()); 
+		if (this.bag != null) {
+			System.out.println("BAG : " + this.bag.toString()); 
+		}
+		else {
+			System.out.println("BAG : null");
+		}
 	}
 	
 	/**
 	 * methode permettant de retourner la taille du sac du personnage
 	 * @return capacite totale du sac
+	 * @throws NoBagException 
 	 */
-	public int getBagCapacity() {
+	public int getBagCapacity() throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		return this.bag.getCapacity();
 	}
 	
 	/**
 	 * methode permettant de retourner le nombre de slots encore disponibles dans le sac du personnage
 	 * @return capacite restante
+	 * @throws NoBagException 
 	 */
-	public int getBagWeight() {
+	public int getBagWeight() throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		return this.bag.getCapacity() - this.bag.getWeight();
 	}
 	
 	/**
 	 * methode permettant de retourner un tableau contenant les items contenus dans le sac du personnage
 	 * @return items contenus dans le sac
+	 * @throws NoBagException 
 	 */
-	public Collectible[] getBagItems() {
+	public Collectible[] getBagItems() throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		return this.bag.getItems();
 	}
 	
@@ -410,20 +474,40 @@ public abstract class Character {
 	 * methode permettant de remplacer le sac du personnage par le sac passe en parametre
 	 * les items sont deplaces dans le nouveau dans la limite de sa capacite
 	 * @return l'ancien sac
+	 * @throws BagFullException 
 	 */
-	public Bag setBag(Bag bag) {
+	public Bag setBag(Bag bag) throws BagFullException {
+		
 		Bag oldBag = this.bag;
+		String oldBagName;
+		String bagName;
+		
+		if (oldBag == null) {
+			oldBagName = "null";
+		}
+		else {
+			oldBagName = oldBag.getClass().getSimpleName();
+		}
+		if (bag == null) {
+			bagName = "null";
+		}
+		else {
+			bagName = this.bag.getClass().getSimpleName();
+		}
+		
 		Bag.transfer(oldBag, bag);
 		this.bag = bag;
-		System.out.println(this.getName() + " changes  " + oldBag.getClass().getSimpleName() + " for " + this.bag.getClass().getSimpleName());
+		System.out.println(this.getName() + " changes  " + oldBagName + " for " + bagName);
 		return oldBag;
 	}
 	
 	/**
 	 * methode permettant d'equiper l'arme passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'arme n'est pas dans le sac
+	 * @throws NoBagException 
 	 */
-	public void equip(Weapon weapon) {
+	public void equip(Weapon weapon) throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		Collectible c = this.bag.pop(weapon);
 		if (c != null) {
 			this.weapon = (Weapon)c;
@@ -434,8 +518,10 @@ public abstract class Character {
 	/**
 	 * methode permettant d'equiper le consumable passe en parametre dans le sac et l'equipe (donc le retire du sac)
 	 * ne fait rien si le consumable n'est pas dans le sac
+	 * @throws NoBagException 
 	 */
-	public void equip(Consumable consumable) {
+	public void equip(Consumable consumable) throws NoBagException {
+		if (this.bag == null) { throw new NoBagException(); }
 		Collectible c = this.bag.pop(consumable);
 		if (c != null) {
 			this.consumable = (Consumable)c;
@@ -449,8 +535,12 @@ public abstract class Character {
 	 * methode permettant de consommer instantanement et sans choisir le premier consommable du bon type trouve
 	 * @param type de consommable voulu
 	 * @return consommable utilise, ou null si aucun consommable du type n'a ete trouve
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws ConsumeRepairNullWeaponException 
+	 * @throws NoBagException 
 	 */
-	private Consumable fastUseFirst(Consumable type) {
+	private Consumable fastUseFirst(Consumable type) throws ConsumeNullException, ConsumeEmptyException, ConsumeRepairNullWeaponException, NoBagException {
 		String action = "";
 		Consumable item = null; //initialisation du consommable
 		for (int i = 0; i < this.bag.getItems().length && item == null; i++) { //cette boucle s'arrete quand elle trouve le consommable approprie
@@ -474,7 +564,7 @@ public abstract class Character {
 			}
 		}
 		
-		if (item == null) return null; //si dans le sac aucun element ne convient, ne fait pas ce qu'il y a en dessous
+		//if (item == null) return null; //si dans le sac aucun element ne convient, ne fait pas ce qu'il y a en dessous
 		
 		//fouille le sac et prend le premier item du type voulu
 		System.out.println(this.getName() + action + "FAST :");
@@ -494,34 +584,79 @@ public abstract class Character {
 	 * consomme la premiere boisson trouvee dans le sac
 	 * @param boisson
 	 * @return boisson 
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws NoBagException 
 	 */
-	public Drink fastDrink() {
-		return (Drink)this.fastUseFirst(new Drink("triche", 1, "1"));
-		//on fait ceci pour recuperer la classe de l'objet cree
+	public Drink fastDrink() throws ConsumeNullException, ConsumeEmptyException, NoBagException {
+		try {
+			return (Drink)this.fastUseFirst(new Drink("triche", 1, "1"));
+			//on fait ceci pour recuperer la classe de l'objet cree
+		} catch (ConsumeRepairNullWeaponException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
 	 * consomme la premiere nourriture trouvee dans le sac
 	 * @param nourriture
 	 * @return nourriture 
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws NoBagException 
 	 */
-	public Food fastEat() {
-		return (Food)this.fastUseFirst(new Food("triche", 1, "1"));
-		//on fait ceci pour recuperer la classe de l'objet cree
+	public Food fastEat() throws ConsumeNullException, ConsumeEmptyException, NoBagException {
+		try {
+			return (Food)this.fastUseFirst(new Food("triche", 1, "1"));
+			//on fait ceci pour recuperer la classe de l'objet cree
+		} catch (ConsumeRepairNullWeaponException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
 	 * consomme la premiere charge du kit trouve dans le sac
 	 * @param kit
 	 * @return kit 
+	 * @throws ConsumeNullException 
+	 * @throws ConsumeEmptyException 
+	 * @throws ConsumeRepairNullWeaponException 
+	 * @throws NoBagException 
 	 */
-	public RepairKit fastRepair() {
+	public RepairKit fastRepair() throws ConsumeNullException, ConsumeEmptyException, ConsumeRepairNullWeaponException, NoBagException {
 		return (RepairKit)this.fastUseFirst(new RepairKit());
 		//on fait ceci pour recuperer la classe de l'objet cree
 	}
 	
+	/**
+	 * methode permettant d'afficher l'arme equipee
+	 */
 	public void printWeapon() {
-		System.out.println(Character.WEAPON_STAT_STRING + " : " + this.weapon.toString());
+		String affichage;
+		if (this.weapon != null) {
+			affichage = this.weapon.toString();
+		}
+		else {
+			affichage = "null";
+		}
+		System.out.println(Character.WEAPON_STAT_STRING + " : " + affichage);
 	}
+	
+	/**
+	 * methode permettant d'afficher le consumable
+	 */
+	public void printConsumable() {
+		if (this.consumable == null) {
+			System.out.println("CONSUMABLE : null"); 
+		}
+		else {
+			System.out.println("CONSUMABLE : " + this.consumable.toString()); 
+		}
+	}
+	
+
+	
 	
 }

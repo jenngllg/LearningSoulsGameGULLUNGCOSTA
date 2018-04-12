@@ -2,6 +2,7 @@ package lsg.weapons;
 
 import lsg.bags.Collectible;
 import lsg.consumables.repair.RepairKit;
+import lsg.exceptions.ConsumeNullException;
 
 public class Weapon implements Collectible {
 	
@@ -123,8 +124,12 @@ public class Weapon implements Collectible {
 	/**
 	 * methode qui remonte la durabilite de l'arme 
 	 * @param kit de reparation
+	 * @throws ConsumeNullException 
 	 */
-	public void repairWith(RepairKit kit) { 
+	public void repairWith(RepairKit kit) throws ConsumeNullException { 
+		if (kit == null) {
+			throw new ConsumeNullException();
+		}
 		this.setDurability(this.getDurability() + kit.use());
 	}
 	

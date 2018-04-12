@@ -8,6 +8,7 @@ import lsg.armor.BlackWitchVeil;
 import lsg.armor.DragonSlayerLeggings;
 import lsg.armor.RingedKnightArmor;
 import lsg.consumables.food.Hamburger;
+import lsg.exceptions.BagFullException;
 import lsg.weapons.Sword;
 
 public class Bag {
@@ -60,8 +61,10 @@ public class Bag {
 	
 	/**
 	 * methode ajoutant un Collectible au sac si la place restante est suffisante
+	 * @throws BagFullException 
 	 */
-	public void push(Collectible item) {
+	public void push(Collectible item) throws BagFullException {
+		if (this.getWeight() >= this.getCapacity()) { throw new BagFullException(this); }
 		if (item.getWeight() <= this.getCapacity() - this.getWeight()) {
 			this.items.add(item);
 			int sommePoids = this.getWeight() + item.getWeight();
@@ -116,20 +119,23 @@ public class Bag {
 			}
 		}
 		else {
-			affichage = this.getClass().getSimpleName() + " [empty]" + System.lineSeparator();
+			affichage = String.format("%s [ %d items | %d/%d kg ]%s %-15s", this.getClass().getSimpleName(), this.items.size(), this.getWeight(), this.getCapacity(), " [empty]", System.lineSeparator());
 		}
 		return affichage;
 	}
 	
 	/**
 	 * methode transferant le contenu du sac source vers le sac de destination (dans la limite de capacite de ce dernier)
+	 * @throws BagFullException 
 	 */
-	public static void transfer(Bag from, Bag into) {
+	public static void transfer(Bag from, Bag into) throws BagFullException {
+		if (from == null ||into == null) { return; }
 		for(Collectible collectible : from.getItems()) {
-			if (into.getCapacity() - into.getWeight() >= collectible.getWeight()) {
-				into.push(collectible);
-				from.pop(collectible);
+			if (into.getCapacity() - into.getWeight() <= collectible.getWeight()) {
+				throw new BagFullException(into); 
 			}
+			into.push(collectible);
+			from.pop(collectible);
 		}
 	}
 	
@@ -144,12 +150,18 @@ public class Bag {
 		RingedKnightArmor ringedKnightArmor1 = new RingedKnightArmor();
 		RingedKnightArmor ringedKnightArmor2 = new RingedKnightArmor();
 		
-		sacMichaelKors.push(blackWitchVeil);
-		sacMichaelKors.push(hamburger);
-		sacMichaelKors.push(basicSword);
-		sacMichaelKors.push(dragonSlayerLeggings);
-		sacMichaelKors.push(ringedKnightArmor1);
-		sacMichaelKors.push(ringedKnightArmor2);
+		try {
+			sacMichaelKors.push(blackWitchVeil);
+			sacMichaelKors.push(hamburger);
+			sacMichaelKors.push(basicSword);
+			sacMichaelKors.push(dragonSlayerLeggings);
+			sacMichaelKors.push(ringedKnightArmor1);
+			sacMichaelKors.push(ringedKnightArmor2);
+		}
+		catch (BagFullException e) {
+			e.printStackTrace();
+		}
+
 		
 		
 //		System.out.println(pochetteChanel.toString());
@@ -177,7 +189,11 @@ public class Bag {
 		System.out.println(sacMichaelKors.toString());
 		System.out.println(pochetteChanel.toString());
 		
-		transfer(sacMichaelKors, pochetteChanel);
+		try {
+			transfer(sacMichaelKors, pochetteChanel);
+		} catch (BagFullException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println("Après transfert :" + System.lineSeparator()); 
 		System.out.println(pochetteChanel.toString());

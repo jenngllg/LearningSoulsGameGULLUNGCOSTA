@@ -21,6 +21,14 @@ import lsg.consumables.drinks.Whisky;
 import lsg.consumables.food.Americain;
 import lsg.consumables.food.Hamburger;
 import lsg.consumables.repair.RepairKit;
+import lsg.exceptions.BagFullException;
+import lsg.exceptions.ConsumeEmptyException;
+import lsg.exceptions.ConsumeNullException;
+import lsg.exceptions.ConsumeRepairNullWeaponException;
+import lsg.exceptions.NoBagException;
+import lsg.exceptions.StaminaEmptyException;
+import lsg.exceptions.WeaponBrokenException;
+import lsg.exceptions.WeaponNullException;
 import lsg.weapons.Claw;
 import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
@@ -95,25 +103,32 @@ public class LearningSoulsGame {
 		init_v2();
 		maxiHeros.setConsumable(new Hamburger());
 	}
-
+	
 	/**
 	 * methode permettant d'afficher les statistiques de chaque personnage
 	 */
 	private void refresh() {
 		maxiHeros.printStats();
-		System.out.println(LearningSoulsGame.BULLET_POINT + maxiHeros.getWeapon().toString());
-		System.out.println(LearningSoulsGame.BULLET_POINT + maxiHeros.getConsumable().toString());
+		maxiHeros.printArmorStats();
+		maxiHeros.printRings();
+		maxiHeros.printConsumable();
+		maxiHeros.printWeapon();
+		maxiHeros.printBag();
 		jennyMonster.printStats();
+		jennyMonster.printWeapon();
 	}
 
 	/**
 	 * methode permettant d'afficher les statistiques de l'attaque
+	 * @throws WeaponNullException 
+	 * @throws WeaponBrokenException 
+	 * @throws StaminaEmptyException 
 	 */
-	private void attack(lsg.characters.Character attaquant, lsg.characters.Character victime) {
+	private void attack(lsg.characters.Character attaquant, lsg.characters.Character victime) throws WeaponNullException, WeaponBrokenException, StaminaEmptyException { //on veut la classe character
 		int attaque = attaquant.attack();
 		int damages = victime.getHitWith(attaque);
 		System.out.println("!!! " + attaquant.getName() + " attack " + victime.getName() + " with "
-				+ attaquant.getWeapon().getName() + " (ATTACK :" + attaque + " | DMG:" + damages + ")");
+				+ attaquant.getWeapon() + " (ATTACK :" + attaque + " | DMG:" + damages + ")");
 	}
 
 	/**
@@ -168,19 +183,53 @@ public class LearningSoulsGame {
 	 * methode permettant de lancer le combat
 	 */
 	private void fight1v1() {
-		refresh();
+		//refresh();
 		while ((jennyMonster.getLife() > 0 && maxiHeros.getLife() > 0)
 				&& (jennyMonster.getStamina() > 0 && maxiHeros.getStamina() > 0)) {
+			System.out.println();
 			System.out.println("Veuillez appuyer sur 1 pour attaquer ou sur 2 pour consommer.");
 			int action = scanner.nextInt();
 			if (action == 1) {
-				attack(maxiHeros, jennyMonster);
-			} else if (action == 2) {
-				maxiHeros.consume();
-			} else {
+				try {
+					attack(maxiHeros, jennyMonster);
+				}
+				catch (WeaponNullException e) {
+					//attaque = 0
+					System.out.println("No weapon has been equipped !!");
+					System.out.println("!!! " + maxiHeros.getName() + " attack " + jennyMonster.getName() + " with "
+							+ maxiHeros.getWeapon() + " (ATTACK : 0 | DMG : 0)");
+				}
+				catch (WeaponBrokenException e) {
+					//attaque = 0
+					System.out.println(maxiHeros.getWeapon() + " is broken !!");
+					System.out.println("!!! " + maxiHeros.getName() + " attack " + jennyMonster.getName() + " with "
+							+ maxiHeros.getWeapon() + " (ATTACK : 0 | DMG : 0)");
+				}
+				catch (StaminaEmptyException e) {
+					//attaque = 0
+					System.out.println("ACTION HAS NO EFFECT : no more stamina !");
+				}
+			}
+			else if (action == 2) {
+				try {
+					maxiHeros.consume();
+				} catch (ConsumeNullException e) {
+					System.out.println("IMPOSSIBLE ACTION : no consumable has been equiped !");
+				} catch (ConsumeEmptyException e) {
+					System.out.println("ACTION HAS NO EFFECT : " + maxiHeros.getConsumable().getName() + " is empty !");
+				} catch (ConsumeRepairNullWeaponException e) {
+					System.out.println("IMPOSSIBLE ACTION : no weapon has been equiped !");
+				}
+			}
+			else {
 				continue;
 			}
-			attack(jennyMonster, maxiHeros);
+			try {
+				attack(jennyMonster, maxiHeros);
+			} catch (WeaponNullException | WeaponBrokenException | StaminaEmptyException e) {
+				e.printStackTrace();
+			}
+			
 			refresh();
 		}
 		getWinner(maxiHeros, jennyMonster);
@@ -194,7 +243,12 @@ public class LearningSoulsGame {
 		maxiHeros = new Hero("Fatigué");
 		maxiHeros.getHitWith(99);
 		maxiHeros.setWeapon(new Weapon("Grosse Epée", 0, 0, 1000, 100));
-		maxiHeros.attack();
+		
+		try {
+			maxiHeros.attack();
+		} catch (WeaponNullException | WeaponBrokenException | StaminaEmptyException e) {
+			e.printStackTrace();
+		}
 		maxiHeros.printStats();
 	}
 
@@ -206,7 +260,15 @@ public class LearningSoulsGame {
 		menu.init();
 		Iterator<Consumable> i = menu.iterator();
 		while (i.hasNext()) {
-			maxiHeros.use(i.next());
+			try {
+				maxiHeros.use(i.next());
+			} catch (ConsumeNullException e) {
+				e.printStackTrace();
+			} catch (ConsumeEmptyException e) {
+				e.printStackTrace();
+			} catch (ConsumeRepairNullWeaponException e) {
+				e.printStackTrace();
+			}
 			maxiHeros.printStats();
 			System.out.println("");
 		}
@@ -216,27 +278,27 @@ public class LearningSoulsGame {
 	/**
 	 * methode permettant de tester les methodes creees dans Bag
 	 */
-	private void testBag_v1() {
-		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
-		maxiHeros.pickUp(dragonSlayerLeggings);
-		maxiHeros.printBag();
-		maxiHeros.pullOut(dragonSlayerLeggings);
-		maxiHeros.printBag();
-	}
+//	private void testBag_v1() {
+//		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+//		maxiHeros.pickUp(dragonSlayerLeggings);
+//		maxiHeros.printBag();
+//		maxiHeros.pullOut(dragonSlayerLeggings);
+//		maxiHeros.printBag();
+//	}
 
 	/**
 	 * methode permettant de tester les methodes creees dans Bag
 	 */
-	private void testBag_v2() {
-		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
-		RingOfDeath ringOfDeath = new RingOfDeath();
-		maxiHeros.pickUp(dragonSlayerLeggings);
-		maxiHeros.pickUp(ringOfDeath);
-		maxiHeros.equip(dragonSlayerLeggings, 1);
-		maxiHeros.printBag();
-		maxiHeros.equip(ringOfDeath, 0);
-		maxiHeros.printBag();
-	}
+//	private void testBag_v2() {
+//		DragonSlayerLeggings dragonSlayerLeggings = new DragonSlayerLeggings();
+//		RingOfDeath ringOfDeath = new RingOfDeath();
+//		maxiHeros.pickUp(dragonSlayerLeggings);
+//		maxiHeros.pickUp(ringOfDeath);
+//		maxiHeros.equip(dragonSlayerLeggings, 1);
+//		maxiHeros.printBag();
+//		maxiHeros.equip(ringOfDeath, 0);
+//		maxiHeros.printBag();
+//	}
 
 	/**
 	 * methode permettant de tester les methodes creees dans Bag
@@ -245,19 +307,36 @@ public class LearningSoulsGame {
 		Whisky whisky = new Whisky();
 		Hamburger hamburger = new Hamburger();
 		RepairKit repairKit = new RepairKit();
-		maxiHeros.pickUp(whisky);
-		maxiHeros.pickUp(hamburger);
-		maxiHeros.pickUp(repairKit);
+		try {
+			maxiHeros.pickUp(whisky);
+			maxiHeros.pickUp(hamburger);
+			maxiHeros.pickUp(repairKit);
+		}
+		catch (BagFullException | NoBagException e) {
+			e.printStackTrace();
+		}
 		maxiHeros.printBag();
 		System.out.println("");
 
-		maxiHeros.fastDrink();
+		try {
+			maxiHeros.fastDrink();
+		} catch (ConsumeEmptyException | ConsumeNullException | NoBagException e) {
+			e.printStackTrace();
+		}
 		maxiHeros.printBag();
-		maxiHeros.fastEat();
+		try {
+			maxiHeros.fastEat();
+		} catch (ConsumeNullException | ConsumeEmptyException | NoBagException e) {
+			e.printStackTrace();
+		}
 		maxiHeros.printBag();
 
 		for (int i = 0; i < 10; i++) {
-			maxiHeros.fastRepair();
+			try {
+				maxiHeros.fastRepair();
+			} catch (ConsumeNullException | ConsumeEmptyException | ConsumeRepairNullWeaponException | NoBagException e) {
+				e.printStackTrace();
+			}
 			maxiHeros.printBag();
 		}
 
@@ -277,19 +356,38 @@ public class LearningSoulsGame {
 		RingedKnightArmor ringedKnightArmor = new RingedKnightArmor();
 		ShotGun shotGun = new ShotGun();
 		System.out.println();
-		maxiHeros.setBag(smallBag);
+		try {
+			maxiHeros.setBag(smallBag);
+		} catch (BagFullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		//le heros ramasse les items
-		maxiHeros.pickUp(shotGun);
-		maxiHeros.pickUp(dragonSlayerLeggings);
-		maxiHeros.pickUp(ringedKnightArmor);
+		try {
+			maxiHeros.pickUp(shotGun);
+			maxiHeros.pickUp(dragonSlayerLeggings);
+			maxiHeros.pickUp(ringedKnightArmor);
+		} catch (NoBagException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (BagFullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		System.out.println();
 		
 		//affichage de ce qu'il y a dans le sac
 		maxiHeros.printBag();
 		
 		//changement de sac
-		maxiHeros.setBag(mediumBag);
+		try {
+			maxiHeros.setBag(mediumBag);
+		} catch (BagFullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println();
 
 		//affichage de ce qu'il y a dans le sac
@@ -304,11 +402,20 @@ public class LearningSoulsGame {
 		
 		
 		//le heros ramasse les items
-		maxiHeros.pickUp(coffee);
-		maxiHeros.pickUp(hamburger);
-		maxiHeros.pickUp(whisky);
-		maxiHeros.pickUp(repairKit1);
-		maxiHeros.pickUp(repairKit2);
+		try {
+			maxiHeros.pickUp(coffee);
+			maxiHeros.pickUp(hamburger);
+			maxiHeros.pickUp(whisky);
+			maxiHeros.pickUp(repairKit1);
+			maxiHeros.pickUp(repairKit2);
+		} catch (NoBagException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (BagFullException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		System.out.println();
 
 		//affichage de ce qu'il y a dans le sac
@@ -323,18 +430,40 @@ public class LearningSoulsGame {
 		
 		System.out.println();
 		System.out.println("--- ACTION ---");
-		maxiHeros.fastDrink();
+		try {
+			maxiHeros.fastDrink();
+		} catch (ConsumeEmptyException | ConsumeNullException | NoBagException e) {
+			e.printStackTrace();
+		}
 		System.out.println();
-		maxiHeros.fastEat();
+		try {
+			maxiHeros.fastEat();
+		} catch (ConsumeEmptyException | ConsumeNullException | NoBagException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println();
-		maxiHeros.equip(shotGun);
+		try {
+			maxiHeros.equip(shotGun);
+		} catch (NoBagException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println();
 		
-		maxiHeros.equip(dragonSlayerLeggings, 0);
+		try {
+			maxiHeros.equip(dragonSlayerLeggings, 0);
+		} catch (NoBagException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		System.out.println();
 
-		maxiHeros.fastRepair();
+		try {
+			maxiHeros.fastRepair();
+		} catch (ConsumeRepairNullWeaponException | ConsumeEmptyException | ConsumeNullException | NoBagException e) {
+			e.printStackTrace();
+		}
 		
 		System.out.println();
 		System.out.println("--- APRES ---");
@@ -343,10 +472,60 @@ public class LearningSoulsGame {
 		maxiHeros.printWeapon();
 		maxiHeros.printBag();
 	}
+	
+	/**
+	 * methode permettant d'initialiser plein de choses (TP6)
+	 */
+	public void init_v6() {
+		title();
+		maxiHeros.setWeapon(new Sword());
+		jennyMonster.setWeapon(new Claw());
+		maxiHeros.setArmorItem(new DragonSlayerLeggings(), 1);
+		maxiHeros.setRing(new RingOfDeath(), 1);
+		maxiHeros.setRing(new DragonSlayerRing(), 2);
+		jennyMonster.setTalisman(new MoonStone(), 1);
+		maxiHeros.setConsumable(new RepairKit());
+		
+
+	}
+	
+	public void testExceptions() {
+		//maxiHeros.setWeapon(null);
+		//maxiHeros.setWeapon(new Weapon("Pelle cassee", 0, 100, 2, 0));
+		//fight1v1();
+		//maxiHeros.setBag(null);
+		
+		try {
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+			maxiHeros.pickUp(new Hamburger());
+		} catch (BagFullException | NoBagException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public static void main(String[] args) {
 
 		LearningSoulsGame learningSoulsGame = new LearningSoulsGame();
-		learningSoulsGame.testFinTP5();
+		learningSoulsGame.refresh();
+		learningSoulsGame.testExceptions();
+		learningSoulsGame.refresh();
 	}
 }
