@@ -359,7 +359,6 @@ public class LearningSoulsGame {
 		try {
 			maxiHeros.setBag(smallBag);
 		} catch (BagFullException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -369,10 +368,8 @@ public class LearningSoulsGame {
 			maxiHeros.pickUp(dragonSlayerLeggings);
 			maxiHeros.pickUp(ringedKnightArmor);
 		} catch (NoBagException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BagFullException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -385,7 +382,6 @@ public class LearningSoulsGame {
 		try {
 			maxiHeros.setBag(mediumBag);
 		} catch (BagFullException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println();
@@ -409,10 +405,8 @@ public class LearningSoulsGame {
 			maxiHeros.pickUp(repairKit1);
 			maxiHeros.pickUp(repairKit2);
 		} catch (NoBagException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (BagFullException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -446,7 +440,6 @@ public class LearningSoulsGame {
 		try {
 			maxiHeros.equip(shotGun);
 		} catch (NoBagException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println();
@@ -454,7 +447,6 @@ public class LearningSoulsGame {
 		try {
 			maxiHeros.equip(dragonSlayerLeggings, 0);
 		} catch (NoBagException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		System.out.println();
