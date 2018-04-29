@@ -8,6 +8,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lsg.characters.Hero;
 import lsg.characters.Zombie;
+import lsg.exceptions.StaminaEmptyException;
+import lsg.exceptions.WeaponBrokenException;
+import lsg.exceptions.WeaponNullException;
 import lsg.graphics.CSSFactory;
 import lsg.graphics.ImageFactory;
 import lsg.graphics.panes.AnimationPane;
@@ -185,6 +188,15 @@ public class LearningSoulsGameApplication extends Application {
 				hudPane.buildTop();
 				hudPane.buildCenter();
 				hudPane.getMessagePane().showMessage("FIGHT !");
+
+				try {
+					for (int i = 0; i < 2; ++i) {
+						zombie.getHitWith(hero.attack());
+						hero.getHitWith(zombie.attack());
+					}
+				} catch (WeaponNullException | WeaponBrokenException | StaminaEmptyException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
