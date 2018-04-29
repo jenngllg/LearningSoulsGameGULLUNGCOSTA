@@ -2,21 +2,27 @@ package lsg.buffs;
 
 import lsg.bags.Collectible;
 
+/**
+ * Classe BuffItem de type Collectible
+ * @author jenni
+ *
+ */
 public abstract class BuffItem implements Collectible {
 
 	/**
 	 * nom du buff
 	 */
 	protected String name;
+	
 	/**
 	 * valeur du buff
 	 */
 	protected float buff;
 
 	/**
-	 * constructeur d'un buffitem
-	 * @param nom du buffitem
-	 * @param valeur du buff
+	 * construit un buffItem 
+	 * @param name nom du buffitem
+	 * @param buff valeur du buff
 	 */
 	public BuffItem(String name, float buff) {
 		this.name = name;
@@ -24,16 +30,14 @@ public abstract class BuffItem implements Collectible {
 	}
 	
 	/**
-	 * accesseur
-	 * @return buff octroye par le collectible
+	 * @return buff buff octroye par le collectible
 	 */
 	public float getBuff() {
 		return buff;
 	}
 
 	/**
-	 * mutateur
-	 * @param buff a octroyer au collectible
+	 * @param buff buff a octroyer au collectible
 	 */
 	protected void setBuff(int buff) {
 		this.buff = buff;
@@ -46,8 +50,7 @@ public abstract class BuffItem implements Collectible {
 	public abstract float computeBuffValue();
 	
 	/**
-	 * accesseur
-	 * @return le poids du buffitem
+	 * @return 1  poids du buffitem (1kg)
 	 */
 	@Override
 	public int getWeight() {
@@ -56,7 +59,7 @@ public abstract class BuffItem implements Collectible {
 
 	/**
 	 * methode affichant les statistiques d'un buff en console
-	 * @return nom du buff (valeur du buff)
+	 * @return String de type "nom du buff (valeur du buff)"
 	 */
 	@Override
 	public String toString() {

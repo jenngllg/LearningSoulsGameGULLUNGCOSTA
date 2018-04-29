@@ -1,10 +1,13 @@
 package lsg.graphics.panes;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import lsg.characters.Character;
 import lsg.characters.Hero;
 import lsg.characters.Monster;
+import lsg.characters.Zombie;
 import lsg.graphics.widgets.characters.renderers.CharacterRenderer;
 import lsg.graphics.widgets.characters.renderers.HeroRenderer;
 import lsg.graphics.widgets.characters.renderers.ZombieRenderer;
@@ -17,7 +20,7 @@ public class AnimationPane extends Pane {
 
     /**
      * Crée un panneau d'animation qui occupe tout l'espace de son parent
-     * @param parent
+     * @param parent 
      */
     public AnimationPane(AnchorPane parent) {
         this.parent = parent ;
@@ -67,7 +70,25 @@ public class AnimationPane extends Pane {
         ZombieRenderer zombieRenderer = createZombieRenderer() ;
         zombieRenderer.goTo(this.getPrefWidth()*0.5 - zombieRenderer.getBoundsInLocal().getWidth() * 0.15, null); ;
     }
-
+    
+    /**
+     * methode faisant rentrer un heros passe en parametre
+     * @param heroRenderer heros graphique
+     */
+    public void startDemo(HeroRenderer heroRenderer){
+        heroRenderer = createHeroRenderer() ;
+        heroRenderer.goTo(this.getPrefWidth()*0.5 - heroRenderer.getFitWidth()*0.65, null);
+    }
+    
+    /**
+     * methode faisant rentrer un zombie passe en parametre
+     * @param zombieRenderer zombie graphique
+     */
+    public void startDemo(ZombieRenderer zombieRenderer, EventHandler<ActionEvent> finishedHandler){
+        zombieRenderer = createZombieRenderer() ;
+        zombieRenderer.goTo(this.getPrefWidth()*0.5 - zombieRenderer.getBoundsInLocal().getWidth() * 0.15, finishedHandler); ;
+    }
+    
     /**
      * Termine la démo (vide le pane)
      */

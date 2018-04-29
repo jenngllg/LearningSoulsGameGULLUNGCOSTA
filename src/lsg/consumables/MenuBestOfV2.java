@@ -9,12 +9,17 @@ import lsg.consumables.drinks.Wine;
 import lsg.consumables.food.Americain;
 import lsg.consumables.food.Hamburger;
 
+/**
+ * classe MenuBestOfV1 servant de classe de test des methodes de la classe Consumable et de ses classes filles
+ * @author jenni
+ *
+ */
 public class MenuBestOfV2 {
 
 	protected HashSet<Consumable> menu;
 	
 	public void init() {
-		this.menu = new HashSet<Consumable>(); //liste de valeurs uniques (on ne peut pas mettre 2 fois le même objet dedans)
+		this.menu = new HashSet<Consumable>(); //liste de valeurs uniques (on ne peut pas mettre 2 fois le mï¿½me objet dedans)
 		Hamburger burger = new Hamburger();
 		Wine wine = new Wine();
 		Americain americain = new Americain();

@@ -11,24 +11,31 @@ import lsg.consumables.food.Hamburger;
 import lsg.exceptions.BagFullException;
 import lsg.weapons.Sword;
 
+/**
+ * Classe Bag qui permet de porter des collectibles
+ * @author jenni
+ *
+ */
 public class Bag {
 
 	/**
 	 * capacite du sac
 	 */
 	private int capacity;
+	
 	/**
 	 * nombre de kg utilises
 	 */
 	private int weight;
+	
 	/**
 	 * items presents dans le sac
 	 */
 	private HashSet<Collectible> items; 
 	
 	/**
-	 * constructeur d'un sac
-	 * @param capacite du sac
+	 * permet de donner une capacite a un sac
+	 * @param capacity capacite du sac
 	 */
 	public Bag(int capacity) {
 		this.items = new HashSet<>();
@@ -36,23 +43,21 @@ public class Bag {
 	}
 
 	/**
-	 * accesseur
-	 * @return capacite du sac
+	 * @return capacity capacite du sac
 	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
 	/**
-	 * accesseur
-	 * @return poids du sac
+	 * @return weight poids du sac
 	 */
 	public int getWeight() {
 		return weight;
 	}
 	
 	/**
-	 * mutateur
+	 * @param weight poids du sac
 	 */
 	private void setWeight(int weight) {
 		this.weight = weight;
@@ -60,7 +65,8 @@ public class Bag {
 	
 	
 	/**
-	 * methode ajoutant un Collectible au sac si la place restante est suffisante
+	 * methode ajoutant un item de type Collectible au sac si la place restante est suffisante
+	 * @param item de type Collectible a ajouter
 	 * @throws BagFullException 
 	 */
 	public void push(Collectible item) throws BagFullException {
@@ -73,8 +79,9 @@ public class Bag {
 	}
 	
 	/**
-	 * methode qui retire un item du sac
-	 * @return item enleve
+	 * methode qui retire un item de type Collectible du sac
+	 * @param item de type Collectible a retirer
+	 * @return item item enleve
 	 */
 	public Collectible pop(Collectible item) {
 		if (items.contains(item)) {
@@ -86,7 +93,8 @@ public class Bag {
 	}
 		
 	/**
-	 * methode qui indique si l'item passe en parametre se trouve bien dans le sac
+	 * methode qui indique si l'item de type Collectible passe en parametre se trouve bien dans le sac
+	 * @param item de type Collectible contenu ou non par le sac
 	 * @return true si l'item est present, false sinon 
 	 */
 	public boolean contains(Collectible item) {
@@ -97,7 +105,7 @@ public class Bag {
 	}
 	
 	/**
-	 * methode retournant les items du sac
+	 * methode retournant les items du sac (sous forme de tableau)
 	 * @return items presents dans le sac
 	 */
 	public Collectible[] getItems() {
@@ -106,7 +114,7 @@ public class Bag {
 	
 	/**
 	 * methode affichant le contenu d'un sac
-	 * @return contenu du sac
+	 * @return affichage contenu du sac
 	 */
 	public String toString() {
 		String affichage = "";
@@ -125,7 +133,9 @@ public class Bag {
 	}
 	
 	/**
-	 * methode transferant le contenu du sac source vers le sac de destination (dans la limite de capacite de ce dernier)
+	 * methode transferant le contenu du sac source from vers le sac de destination into (dans la limite de capacite de ce dernier)
+	 * @param from sac de depart
+	 * @param into sac d'arrivee
 	 * @throws BagFullException 
 	 */
 	public static void transfer(Bag from, Bag into) throws BagFullException {
@@ -139,6 +149,10 @@ public class Bag {
 		}
 	}
 	
+	/**
+	 * methode de test
+	 * @param args arguments
+	 */
 	public static void main (String[] args) {
 		
 		SmallBag pochetteChanel = new SmallBag();

@@ -3,6 +3,11 @@ package lsg.exceptions;
 import lsg.consumables.Consumable;
 
 //impossible d'instancier ConsumeException sans passer par une sous classe
+
+/**
+* Classe ConsumeException qui permet de lever les exceptions des methodes de Consumable et de ses classes filles
+* @author jenni
+*/
 public abstract class ConsumeException extends Exception {
 
 	private Consumable consumable;

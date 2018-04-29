@@ -9,6 +9,11 @@ import lsg.consumables.drinks.Wine;
 import lsg.consumables.food.Americain;
 import lsg.consumables.food.Hamburger;
 
+/**
+ * classe MenuBestOfV1 servant de classe de test des methodes de la classe Consumable et de ses classes filles
+ * @author jenni
+ *
+ */
 public class MenuBestOfV3 extends HashSet<Consumable> {
 	
 	public void init() {

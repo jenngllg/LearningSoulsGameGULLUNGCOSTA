@@ -8,16 +8,23 @@ import lsg.bags.Collectible;
 import lsg.buffs.Ring;
 import lsg.exceptions.NoBagException;
 
+/**
+ * Classe Hero de type Character
+ * @author jenni
+ *
+ */
 public class Hero extends Character {
 
 	/**
 	 * pieces d'armures equipees
 	 */
 	public ArmorItem[] armor;
+	
 	/**
 	 * bagues equipees
 	 */
 	public Ring[] rings;
+	
 	/**
 	 * static car commun a toutes les instances
 	 */
@@ -25,37 +32,35 @@ public class Hero extends Character {
 	private static final int MAX_RINGS = 2; 
 
 	/**
-	 * constructeur par defaut
+	 * cree un Hero avec 3 slots d'armure, 2 slot de bagues, le nom "Ynovator", 100 de vie, 100 de vie maximum, 100 de stamina max, 50 de stamina
 	 */
 	public Hero() {
 		this.armor = new ArmorItem[MAX_ARMOR_PIECES];
 		this.rings = new Ring[MAX_RINGS];
 		this.name = "Ynovator";
-		this.life = 100;
-		this.maxLife = 100;
-		this.stamina = 100;
-		this.maxStamina = 50;
+		setLife(100);
+		setMaxLife(100);
+		setStamina(50);
+		setMaxStamina(100);
 	}
 
 	/**
-	 * accesseur
-	 * @return bagues portees par le heros
+	 * @return rings bagues portees par le heros
 	 */
 	protected Ring[] getRings() {
 		return rings;
 	}
 
 	/**
-	 * mutateur
-	 * @param bagues
+	 * @param rings bagues 
 	 */
 	protected void setRings(Ring[] rings) {
 		this.rings = rings;
 	}
 
 	/**
-	 * constructeur a un parametre
-	 * @param nom du heros
+	 * cree un Hero avec un nom
+	 * @param name nom du heros
 	 */
 	public Hero(String name) {
 		this(); // appel au constructeur
@@ -63,7 +68,9 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * methode qui equipe le heros d'une piece d'armure
+	 * methode qui equipe le heros d'une piece d'armure a une position (slot) donnee
+	 * @param piece piece d'armure a equiper
+	 * @param slot position a laquelle equiper l'armure 
 	 */
 	public void setArmorItem(ArmorItem piece, int slot) {
 		if (slot < MAX_ARMOR_PIECES || slot > 0) {
@@ -73,7 +80,7 @@ public class Hero extends Character {
 
 	/**
 	 * methode retournant le total d'armure du heros
-	 * @return somme des valeurs de pieces d'armures portees par le heros
+	 * @return sommeArmures somme des valeurs de pieces d'armures portees par le heros
 	 */
 	public float getTotalArmor() {
 		float sommeArmures = 0;
@@ -88,7 +95,7 @@ public class Hero extends Character {
 	/**
 	 * renvoie une chaine contenant la description de l'armure totale portee par le
 	 * heros
-	 * @return String de type ARMOR 1:armure1(valeur1) 2:armor2(valeur2) 3:armor3(valeur3) TOTAL:total
+	 * @return String de type "ARMOR 1:armure1(valeur1) 2:armor2(valeur2) 3:armor3(valeur3) TOTAL:total"
 	 */
 	public String armorToString() {
 		String armureComplete = "";
@@ -113,7 +120,7 @@ public class Hero extends Character {
 
 	/**
 	 * renvoie toutes les pieces d'armure portees par le heros
-	 * @return pieces portees par le heros
+	 * @return piecesPortees pieces portees par le heros
 	 */
 	protected ArmorItem[] getArmorItem() {
 		List<ArmorItem> piecesPorteesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
@@ -130,7 +137,7 @@ public class Hero extends Character {
 
 	/**
 	 * methode qui renvoie une valeur permettant de calculer l'amoindrissement des degats subis par le heros
-	 * @return protection du personnage
+	 * @return totalArmor protection du personnage
 	 */
 	@Override
 	protected float computeProtection() {
@@ -138,19 +145,18 @@ public class Hero extends Character {
 	}
 
 	/**
-	 * mutateur
-	 * @param bague
-	 * @param endroit auquel placer la bague
+	 * @param ring bague a equiper
+	 * @param slot endroit auquel placer la bague
 	 */
 	public void setRing(Ring ring, int slot) {
 		if (slot < MAX_RINGS || slot > 0) {
-			this.rings[slot - 1] = ring; // l'index du tableau commence � 0 donc on doit enlever 1
+			this.rings[slot - 1] = ring; // l'index du tableau commence a 0 donc on doit enlever 1
 		}
 	}
 	
 	/**
 	 * methode qui retourne le total de buff du heros
-	 * @return total des valeurs de buff du heros
+	 * @return sommeBagues total des valeurs de buff du heros
 	 */
 	@Override
 	public float getTotalBuff() {
@@ -164,9 +170,8 @@ public class Hero extends Character {
 	}
 	
 	/**
-	 * renvoie une chaine contenant la description des bagues portees par le
-	 * heros
-	 * @return String
+	 * renvoie une chaine contenant la description des bagues portees par le heros
+	 * @return String de type "BUFF: buff TOTAL: valeur totale des buffs"
 	 */
 	public String buffToString() {
 		String buffComplet = "";
@@ -191,7 +196,7 @@ public class Hero extends Character {
 
 	/**
 	 * renvoie toutes les bagues portees
-	 * @return bagues portees
+	 * @return piecesPortees bagues portees
 	 */
 	protected Ring[] getRing() {
 		List<Ring> baguesPorteesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille
@@ -209,6 +214,8 @@ public class Hero extends Character {
 	/**
 	 * methode permettant d'equiper l'armure passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'armure n'est pas dans le sac
+	 * @param item de type ArmorItem a equiper
+	 * @param slot emplacement auquel equiper l'item
 	 * @throws NoBagException 
 	 */
 	public void equip(ArmorItem item, int slot) throws NoBagException {
@@ -223,6 +230,8 @@ public class Hero extends Character {
 	/**
 	 * methode permettant d'equiper la bague passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si bague n'est pas dans le sac
+	 * @param ring de type Ring a equiper
+	 * @param slot emplacement auquel equiper la bague
 	 * @throws NoBagException 
 	 */
 	public void equip(Ring ring, int slot) throws NoBagException {
@@ -237,7 +246,7 @@ public class Hero extends Character {
 	/**
 	 * renvoie une chaine contenant la description des bagues totale portees par le
 	 * heros
-	 * @return String de type RINGS 1:[bague1, valeur1] 2:[bague2, valeur2]
+	 * @return String de type "RINGS 1:[bague1, valeur1] 2:[bague2, valeur2]"
 	 */
 	public String ringToString() {
 		String bagueComplete = "";

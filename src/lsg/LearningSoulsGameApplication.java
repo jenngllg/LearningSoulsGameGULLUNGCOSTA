@@ -6,13 +6,27 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lsg.characters.Hero;
+import lsg.characters.Zombie;
 import lsg.graphics.CSSFactory;
 import lsg.graphics.ImageFactory;
 import lsg.graphics.panes.AnimationPane;
 import lsg.graphics.panes.CreationPane;
+import lsg.graphics.panes.HUDPane;
+import lsg.graphics.panes.MessagePane;
 import lsg.graphics.panes.TitlePane;
+import lsg.graphics.widgets.characters.renderers.HeroRenderer;
+import lsg.graphics.widgets.characters.renderers.ZombieRenderer;
+import lsg.graphics.widgets.characters.statbars.StatBar;
 import lsg.graphics.widgets.texts.GameLabel;
+import lsg.weapons.Sword;
+import lsg.weapons.ZombiesHand;
 
+/**
+ * Classe de run Learning Souls Game
+ * @author jenni
+ *
+ */
 public class LearningSoulsGameApplication extends Application {
 
 	@Override
@@ -63,9 +77,34 @@ public class LearningSoulsGameApplication extends Application {
 	 */
 	private AnimationPane animationPane;
 	
+	/**
+	 * hero
+	 */
+	private Hero hero;
 	
 	/**
-	 * 
+	 * heroRenderer
+	 */
+	private HeroRenderer heroRenderer;
+	
+	/**
+	 * zombie
+	 */
+	private Zombie zombie;
+	
+	/**
+	 * zombieRenderer
+	 */
+	private ZombieRenderer zombieRenderer;
+	
+	/**
+	 * hudPane
+	 */
+	private HUDPane hudPane;
+	
+	
+	/**
+	 * methode permettant de creer le jeu en graphique
 	 */
 	private void buildUI() {
 		//association de la feuille de style a la fenetre de l'application (stage)
@@ -87,6 +126,12 @@ public class LearningSoulsGameApplication extends Application {
 		root.getChildren().addAll(creationPane);
 		
 		animationPane = new AnimationPane(root);
+		
+		hudPane = new HUDPane();
+		AnchorPane.setTopAnchor(hudPane, 0.0);
+		AnchorPane.setLeftAnchor(hudPane, 0.0);
+		AnchorPane.setRightAnchor(hudPane, 0.0);
+		AnchorPane.setBottomAnchor(hudPane, 0.0);
 	}
 	
 	/**
@@ -126,11 +171,57 @@ public class LearningSoulsGameApplication extends Application {
 		}));
 	}
 	
+	/**
+	 * methode permettant de lancer la demo du jeu
+	 */
 	private void play() {
 		root.getChildren().add(animationPane);
-		animationPane.startDemo();
+		root.getChildren().add(hudPane);
+		createHero();
+		createMonster(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				hudPane.buildTop();
+				hudPane.buildCenter();
+				hudPane.getMessagePane().showMessage("FIGHT !");
+			}
+		});
 	}
 	
+	/**
+	 * methode instanciant un Hero avec le nom donne par le joueur et lui donnant une instance de Sword
+	 */
+	private void createHero() {
+		hero = new Hero(heroName);
+		hero.setWeapon(new Sword());
+		heroRenderer = animationPane.createHeroRenderer();
+		animationPane.startDemo(heroRenderer);
+		hudPane.setHeroSB(new StatBar(ImageFactory.SPRITES_ID.HERO_HEAD, hero.getName()));
+		hudPane.getHeroSB().getLifeBar().progressProperty().bind(hero.lifeRateProperty());
+		hudPane.getHeroSB().getStamBar().progressProperty().bind(hero.staminaRateProperty());
+
+	}
+	
+	/**
+	 * methode instanciant un Zombie et lui donnant une instance de main de zombie
+	 * @param finishedHandler appele lorsque l'execution de createMonster sera terminee (lorsqu'il arrive au milieu de l'ecran)
+	 */
+	private void createMonster(EventHandler<ActionEvent> finishedHandler) {
+		zombie = new Zombie();
+		zombie.setWeapon(new ZombiesHand());
+		zombieRenderer = animationPane.createZombieRenderer();
+		animationPane.startDemo(zombieRenderer, finishedHandler);
+		hudPane.setZombieSB(new StatBar(ImageFactory.SPRITES_ID.ZOMBIE_HEAD, zombie.getName()));
+		hudPane.getZombieSB().getLifeBar().progressProperty().bind(zombie.lifeRateProperty());
+		hudPane.getZombieSB().getStamBar().progressProperty().bind(zombie.staminaRateProperty());	
+	}
+
+	
+	/**
+	 * methode permettant de lancer le jeu
+	 * @param args arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

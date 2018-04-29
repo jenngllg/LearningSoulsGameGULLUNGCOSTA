@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import  java.util.Random;
 
-//classe D�
+/*
+ * Classe de
+ */
 public class Dice {
 	
 	/**
 	 * nombre de faces du de
 	 */
 	private int faces; 
+	
 	/** 
 	 * nombre aleatoire
 	 */
 	private Random random; 
 	
 	/**
-	 * constructeur d'un de
-	 * @param nombre de faces du de
+	 * cree un de avec un nombre de faces donne
+	 * @param faces nombre de faces du de
 	 */
 	public Dice(int faces) {
 		this.faces = faces;
 	}
-	
 	
 	/**
 	 * methode permettant de lancer le de
@@ -34,7 +36,9 @@ public class Dice {
 		return random.nextInt(faces);
 	}
 	
-	//test du lancer de de
+	/*
+	 * methode de test du lancement de de
+	 */
 	public static void main (String[] args) {
 		
 		//creation du de a 50 faces

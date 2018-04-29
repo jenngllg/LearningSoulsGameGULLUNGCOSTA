@@ -1,5 +1,10 @@
 package lsg.bags;
 
+/** 
+ * Classe Collectible 
+ * @author jenni
+ *
+ */
 public interface Collectible {
 
 	/**

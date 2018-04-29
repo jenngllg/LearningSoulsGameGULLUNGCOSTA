@@ -1,5 +1,6 @@
 package lsg.characters;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import lsg.bags.Bag;
 import lsg.bags.Collectible;
 import lsg.bags.SmallBag;
@@ -18,44 +19,62 @@ import lsg.exceptions.WeaponNullException;
 import lsg.helpers.Dice;
 import lsg.weapons.Weapon;
 
+/**
+ * Classe Character
+ * @author jenni
+ *
+ */
 public abstract class Character {
 
 	/**
 	 * nom du personnage
 	 */
 	protected String name; 
+	
 	/**
 	 * points de vie restants
 	 */
 	protected int life; 
+	
 	/**
 	 * nombre maximal de points de vie
 	 */
 	protected int maxLife;
+	
 	/**
 	 * force restante
 	 */
 	protected int stamina; 
+	
 	/**
 	 * force maximale
 	 */
 	protected int maxStamina;
+	
 	/**
 	 * de
 	 */
 	protected Dice dice; 
+	
 	/**
 	 * reference vers l'arme equipee
 	 */
 	protected Weapon weapon;
+	
 	/**
 	 * reference vers le consommable equipe
 	 */
 	protected Consumable consumable;
+	
 	/**
 	 * reference vers le sac equipe
 	 */
 	protected Bag bag;
+	
+	protected SimpleDoubleProperty lifeRate;
+	
+	protected SimpleDoubleProperty staminaRate;
+
 
 	
 	protected static final String LIFE_STAT_STRING = "life";
@@ -71,119 +90,117 @@ public abstract class Character {
 
 
 	/**
-	 * accesseur
-	 * @return vie du personnage
+	 * @return life vie du personnage
 	 */
 	public int getLife() {
 		return life;
 	}
 
 	/**
-	 * mutateur
-	 * @param vie du personnage
+	 * @param life vie du personnage
 	 */
 	protected void setLife(int life) {
 		this.life = life;
+		calculateLifeRate();
+	}
+
+	private void calculateLifeRate() {
+		lifeRate.set((double)life/maxLife);
 	}
 
 	/**
-	 * accesseur
-	 * @return maximum de vie du personnage
+	 * @return maxLife maximum de vie du personnage
 	 */
 	public int getMaxLife() {
 		return maxLife;
 	}
 
 	/**
-	 * mutateur
-	 * @param maximum de vie du personnage
+	 * @param maxLife maximum de vie du personnage
 	 */
 	protected void setMaxLife(int maxLife) {
 		this.maxLife = maxLife;
+		calculateLifeRate();
 	}
 
 	/**
-	 * accesseur
-	 * @return stamina du personnage
+	 * @return stamina stamina du personnage
 	 */
 	public int getStamina() {
 		return stamina;
 	}
 
 	/**
-	 * mutateur
-	 * @param stamina du personnage
+	 * @param stamina stamina du personnage
 	 */
 	protected void setStamina(int stamina) {
 		this.stamina = stamina;
+		calculateStaminaRate();
+	}
+	
+	private void calculateStaminaRate() {
+		staminaRate.set((double)stamina/maxStamina);
 	}
 
 	/**
-	 * accesseur
-	 * @return maximum de stamina du personnage
+	 * @return maxStamina maximum de stamina du personnage
 	 */
 	public int getMaxStamina() {
 		return maxStamina;
 	}
 
 	/**
-	 * mutateur
-	 * @param maximum de stamina du personnage
+	 * @param maxStamina maximum de stamina du personnage
 	 */
 	protected void setMaxStamina(int maxStamina) {
 		this.maxStamina = maxStamina;
+		calculateStaminaRate();
 	}
 
 	/**
-	 * accesseur
-	 * @return nom du personnage
+	 * @return name nom du personnage
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * mutateur
-	 * @param nom du personnage
+	 * @param name nom du personnage
 	 */
 	protected void setName(String name) {
 		this.name = name;
 	}
 	
 	/** 
-	 * accesseur
-	 * @return arme du personnage
+	 * @return weapon arme du personnage
 	 */
 	public Weapon getWeapon() {
 		return weapon;
 	}
 
 	/**
-	 * mutateur
-	 * @param arme du personnage
+	 * @param weapon arme du personnage
 	 */
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
 	}
 	
 	/**
-	 * accesseur
-	 * @return consommable du personnage
+	 * @return consumable consommable du personnage
 	 */
 	public Consumable getConsumable() {
 		return consumable;
 	}
 
 	/**
-	 * mutateur
-	 * @param consommable du personnage
+	 * @param consumable consommable du personnage
 	 */
 	public void setConsumable(Consumable consumable) {
 		this.consumable = consumable;
 	}
 	
 	/**
-	 * constructeur par défaut
+	 * cree un character de nom Ynovator, avec 100 de vie, 100 de vie maximum, 50 de stamina, 50 de stamina maximum et un SmallBag (capacite 10kg)
 	 */
 	public Character() {
 		this.name = "Ynovator";
@@ -192,13 +209,15 @@ public abstract class Character {
 		this.stamina = 50;
 		this.maxStamina = 50;
 		this.dice = new Dice(101);
-		this.bag = new SmallBag(); 
+		this.bag = new SmallBag();
+		this.lifeRate = new SimpleDoubleProperty();
+		this.staminaRate = new SimpleDoubleProperty();
 	}
 	
 	
 	/**
-	 * constructeur à un paramètre
-	 * @param nom du personnage
+	 *  cree un personnage avec un nom
+	 * @param name nom du personnage
 	 */
 	public Character(String name) {
 		/**
@@ -210,7 +229,7 @@ public abstract class Character {
 	
 	/**
 	 * methode retournant les statistiques d'un personnage
-	 * @return chaine de la forme [Personnage] Nom LIFE:x STAMINA:x PROTECTION:x BUFF:x (ALIVE/DEAD)
+	 * @return String de la forme [Personnage] Nom LIFE:x STAMINA:x PROTECTION:x BUFF:x (ALIVE/DEAD)
 	 */
 	public String toString() {
 		return String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s", "[" + this.getClass().getSimpleName() + "]", this.getName(),  Character.LIFE_STAT_STRING + ":" + this.getLife(), Character.STAM_STAT_STRING + ":" + this.getStamina(), Character.PROTECT_STAT_STRING + ":" + this.computeProtection(), Character.BUFF_STAT_STRING + ":" + this.getTotalBuff(), "(" + (isAlive()? Character.ALIVE_STAT_STRING : Character.DEAD_STAT_STRING) + ")");
@@ -245,8 +264,9 @@ public abstract class Character {
 	abstract protected float computeProtection();
 	
 	/**
-	 * methode permettant d'attaquer avec une arme
-	 * @return degats portes par le personnage 
+	 * methode permettant d'attaquer avec une arme 
+	 * @param weapon arme portee par le personnage
+	 * @return damage degats portes par le personnage 
 	 * @throws WeaponNullException 
 	 * @throws WeaponBrokenException 
 	 * @throws StaminaEmptyException 
@@ -280,7 +300,7 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant d'attaquer 
-	 * @return degats realises
+	 * @return degats realises, 0 si le personnage est mort
 	 * @throws WeaponNullException 
 	 * @throws WeaponBrokenException 
 	 * @throws StaminaEmptyException 
@@ -293,8 +313,9 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode calculant le nb de points de vie retires au personnage en fonction des degats recus
-	 * @return degats recus
+	 * methode calculant le nombre de points de vie retires au personnage en fonction des degats recus
+	 * @param value valeur des dommages reçus
+	 * @return realDamages degats reels recus
 	 */
 	public int getHitWith(int value) {
 		if (computeProtection() >= 100) {
@@ -308,6 +329,7 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de boire une boisson, ce qui remonte le niveau de stamina
+	 * @param boisson à boire
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 */
@@ -328,6 +350,7 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de manger de la nourriture, ce qui remonte le niveau de vie
+	 * @param nourriture à manger
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 */
@@ -347,7 +370,8 @@ public abstract class Character {
 	}
 
 	/**
-	 * methode faisant appel à drink() ou eat() en fonction du type de consommable
+	 * methode faisant appel à drink(), repairWeaponWith() ou eat() en fonction du type de consommable passe en parametre
+	 * @param consumable a consommer
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws ConsumeRepairNullWeaponException 
@@ -371,7 +395,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant de réparer son arme, ce qui augmente sa durability
+	 * methode permettant de reparer son arme, ce qui augmente sa durability
+	 * @param kit a utiliser
 	 * @throws WeaponNullException 
 	 */
 	public void repairWeaponWith(RepairKit kit) throws WeaponNullException {
@@ -383,7 +408,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant de consommer le consommable équipé
+	 * methode permettant de consommer le consommable equipe
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws ConsumeRepairNullWeaponException 
@@ -393,7 +418,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant d'ajouter un item dans le sac du personnage
+	 * methode permettant d'ajouter un item de type Collectible dans le sac du personnage si la capacite restante est suffisante
+	 * @param item de type Collectible a ajouter au sac
 	 * @throws NoBagException 
 	 * @throws BagFullException 
 	 */
@@ -406,7 +432,8 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant de supprimer un item du sac du personnage
+	 * methode permettant de supprimer un item de type Collectible du sac du personnage
+	 * @param item de type Collectible a supprimer du sac
 	 * @return item supprime
 	 * @throws NoBagException 
 	 */
@@ -421,15 +448,14 @@ public abstract class Character {
 	}
 
 	/**
-	 * accesseur
-	 * @return sac du character
+	 * @return bag sac du character
 	 */
 	public Bag getBag() {
 		return bag;
 	}
 
 	/**
-	 * methode permettant d'afficher le contenu du sac
+	 * methode permettant d'afficher le contenu du sac en console 
 	 */
 	public void printBag() {
 		if (this.bag != null) {
@@ -442,7 +468,7 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de retourner la taille du sac du personnage
-	 * @return capacite totale du sac
+	 * @return capacity capacite totale du sac
 	 * @throws NoBagException 
 	 */
 	public int getBagCapacity() throws NoBagException {
@@ -452,7 +478,7 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de retourner le nombre de slots encore disponibles dans le sac du personnage
-	 * @return capacite restante
+	 * @return capacity capacite restante
 	 * @throws NoBagException 
 	 */
 	public int getBagWeight() throws NoBagException {
@@ -471,9 +497,10 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant de remplacer le sac du personnage par le sac passe en parametre
+	 * methode permettant de remplacer le sac du personnage par le sac bag passe en parametre
 	 * les items sont deplaces dans le nouveau dans la limite de sa capacite
-	 * @return l'ancien sac
+	 * @param bag sac qui remplace l'ancien
+	 * @return oldBag l'ancien sac
 	 * @throws BagFullException 
 	 */
 	public Bag setBag(Bag bag) throws BagFullException {
@@ -504,6 +531,7 @@ public abstract class Character {
 	/**
 	 * methode permettant d'equiper l'arme passee en parametre dans le sac et l'equipe (donc la retire du sac)
 	 * ne fait rien si l'arme n'est pas dans le sac
+	 * @param weapon arme a equiper 
 	 * @throws NoBagException 
 	 */
 	public void equip(Weapon weapon) throws NoBagException {
@@ -518,6 +546,7 @@ public abstract class Character {
 	/**
 	 * methode permettant d'equiper le consumable passe en parametre dans le sac et l'equipe (donc le retire du sac)
 	 * ne fait rien si le consumable n'est pas dans le sac
+	 * @param consumable a equiper
 	 * @throws NoBagException 
 	 */
 	public void equip(Consumable consumable) throws NoBagException {
@@ -533,8 +562,8 @@ public abstract class Character {
 	
 	/**
 	 * methode permettant de consommer instantanement et sans choisir le premier consommable du bon type trouve
-	 * @param type de consommable voulu
-	 * @return consommable utilise, ou null si aucun consommable du type n'a ete trouve
+	 * @param type type de consommable voulu
+	 * @return item consommable utilise, ou null si aucun consommable du type n'a ete trouve
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws ConsumeRepairNullWeaponException 
@@ -582,8 +611,7 @@ public abstract class Character {
 	
 	/**
 	 * consomme la premiere boisson trouvee dans le sac
-	 * @param boisson
-	 * @return boisson 
+	 * @return boisson trouvee
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws NoBagException 
@@ -600,8 +628,7 @@ public abstract class Character {
 	
 	/**
 	 * consomme la premiere nourriture trouvee dans le sac
-	 * @param nourriture
-	 * @return nourriture 
+	 * @return nourriture trouvee
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws NoBagException 
@@ -618,8 +645,7 @@ public abstract class Character {
 	
 	/**
 	 * consomme la premiere charge du kit trouve dans le sac
-	 * @param kit
-	 * @return kit 
+	 * @return kit trouve
 	 * @throws ConsumeNullException 
 	 * @throws ConsumeEmptyException 
 	 * @throws ConsumeRepairNullWeaponException 
@@ -631,7 +657,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant d'afficher l'arme equipee
+	 * methode permettant d'afficher l'arme equipee en console de type "WEAPON: arme equipee"
 	 */
 	public void printWeapon() {
 		String affichage;
@@ -645,7 +671,7 @@ public abstract class Character {
 	}
 	
 	/**
-	 * methode permettant d'afficher le consumable
+	 * methode permettant d'afficher le consumable equipe en console de type "CONSUMABLE: consumable equipe"
 	 */
 	public void printConsumable() {
 		if (this.consumable == null) {
@@ -655,8 +681,17 @@ public abstract class Character {
 			System.out.println("CONSUMABLE : " + this.consumable.toString()); 
 		}
 	}
-	
 
+	/**
+	 * @return lifeRateProperty
+	 */
+	public SimpleDoubleProperty lifeRateProperty() {
+		return lifeRate;
+	}
+
+	public SimpleDoubleProperty staminaRateProperty() {
+		return staminaRate;
+	}
 	
 	
 }

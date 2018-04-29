@@ -4,27 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import lsg.buffs.Talisman;
 
+/**
+ * Classe Monster de type Character
+ * @author jenni
+ *
+ */
 public class Monster extends Character {
 	
 	/**
 	 * talismans portes par le monstre
 	 */
 	public Talisman[] talismans;
+	
 	/**
 	 * nombre de monstres instancies
 	 */
-	private static int INSTANCE_COUNT;
+	protected static int INSTANCE_COUNT;
+	
 	/**
 	 * epaisseur de la peau (protection)
 	 */
-	private float skinThickness; 
+	protected float skinThickness;
+	
 	/**
 	 * nombre de talismans pouvant etre portes par le monstre
 	 */
-	private static final int MAX_TALISMAN = 1; 
+	protected static final int MAX_TALISMAN = 1; 
+	
 	
 	/**
-	 * constructeur par defaut
+	 * cree un monstre avec comme nom "Monster_numeroDuMonstre", un tableau de talismans, 100 de vie, 100 de vie maximum, 100 de stamina, 100 de stamina maximum et 20 d'epaisseur de peau
 	 */
 	public Monster() {
 		/**
@@ -41,24 +50,22 @@ public class Monster extends Character {
 	}
 	
 	/**
-	 * accesseur
-	 * @return epaisseur de la peau
+	 * @return skinThickness epaisseur de la peau
 	 */
 	public float getSkinThickness() {
 		return skinThickness;
 	}
 
 	/**
-	 * mutateur
-	 * @param epaisseur de la peau
+	 * @param skinThickness epaisseur de la peau
 	 */
 	protected void setSkinThickness(float skinThickness) {
 		this.skinThickness = skinThickness;
 	}
 
 	/** 
-	 * constructeur a un parametre
-	 * @param nom du monstre
+	 * cree un monstre en lui reassignant un nom
+	 * @param name nom du monstre
 	 */
 	public Monster(String name) {
 		/**
@@ -74,9 +81,8 @@ public class Monster extends Character {
 	}
 	
 	/**
-	 * mutateur
-	 * @param talisman a equiper
-	 * @param endroit ou equiper le talisman
+	 * @param talisman talisman a equiper
+	 * @param slot endroit ou equiper le talisman
 	 */
 	public void setTalisman(Talisman talisman, int slot) {
 		if (slot < MAX_TALISMAN || slot > 0) {
@@ -86,7 +92,7 @@ public class Monster extends Character {
 	
 	/**
 	 * retourne le total de buff du monstre
-	 * @return total de buff du monstre
+	 * @return sommeTalismans total de buff du monstre
 	 */
 	@Override
 	public float getTotalBuff() {
@@ -102,7 +108,7 @@ public class Monster extends Character {
 	/**
 	 * renvoie une chaine contenant la description des talismans portes par le
 	 * heros
-	 * @return String de la forme BUFF 1:talisman1(valeur1) TOTAL:total
+	 * @return String de la forme "BUFF 1:talisman1(valeur1) TOTAL:total"
 	 */
 	public String buffToString() {
 		String buffComplet = "";
@@ -127,7 +133,7 @@ public class Monster extends Character {
 
 	/**
 	 * renvoie tous les talismans portes par le monstre
-	 * @return talismans portes par le monstre
+	 * @return talismansPortes talismans portes par le monstre
 	 */
 	protected Talisman[] getTalisman() {
 		List<Talisman> talismansPortesArrayList = new ArrayList<>(); // initialisation d'une arraylist (taille

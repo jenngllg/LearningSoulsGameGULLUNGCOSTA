@@ -3,26 +3,34 @@ package lsg.consumables;
 import lsg.bags.Collectible;
 import lsg.exceptions.ConsumeEmptyException;
 
+/** 
+ * Classe consumable de type collectible qui regenere des statistiques
+ * @author jenni
+ *
+ */
 public class Consumable implements Collectible{
 
 	/**
 	 * nom du collectible
 	 */
 	private String name;
+	
 	/**
 	 * capacite du collectible
 	 */
 	private int capacity;
+	
 	/**
 	 * statistique du collectible
 	 */
 	private String stat;
+	
 
 	/**
-	 * constructeur
-	 * @param nom du collectible
-	 * @param capacite du collectible
-	 * @param statistique du collectible
+	 * cree un consumable avec un nom, une capacite et des stats a regenerer
+	 * @param name nom du collectible
+	 * @param capacity capacite du collectible
+	 * @param stat statistique du collectible
 	 */
 	public Consumable(String name, int capacity, String stat) {
 		this.name = name;
@@ -31,32 +39,28 @@ public class Consumable implements Collectible{
 	}
 
 	/**
-	 * accesseur
-	 * @return nom du collectible
+	 * @return name nom du collectible
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * accesseur
-	 * @return capacite du collectible
+	 * @return capacity capacite du collectible
 	 */
 	public int getCapacity() {
 		return capacity;
 	}
 
 	/**
-	 * accesseur
-	 * @return statistique du collectible
+	 * @return stat statistique du collectible
 	 */
 	public String getStat() {
 		return stat;
 	}
 
 	/**
-	 * mutateur
-	 * @param capacite du collectible
+	 * @param capacity capacite du collectible
 	 */
 	protected void setCapacity(int capacity) {
 		this.capacity = capacity;
@@ -64,7 +68,7 @@ public class Consumable implements Collectible{
 	
 	/**
 	 * methode qui fait passer la capacite a 0
-	 * @return montant total de la capacite
+	 * @return capacity montant total de la capacite
 	 * @throws ConsumeEmptyException 
 	 */
 	public int use() throws ConsumeEmptyException {
@@ -83,8 +87,7 @@ public class Consumable implements Collectible{
 	}
 
 	/**
-	 * accesseur
-	 * @return poids du consommable (1 kg)
+	 * @return 1 poids du consommable (1 kg)
 	 */
 	@Override
 	public int getWeight() {

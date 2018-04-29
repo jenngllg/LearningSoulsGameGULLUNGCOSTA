@@ -34,6 +34,11 @@ import lsg.weapons.ShotGun;
 import lsg.weapons.Sword;
 import lsg.weapons.Weapon;
 
+/**
+ * Classe LearningSoulsGame permettant de tester toutes les methodes du projet
+ * @author jenni
+ *
+ */
 public class LearningSoulsGame {
 
 	private Hero maxiHeros;
@@ -70,7 +75,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode permettant d'initialiser l'armure
+	 * methode permettant d'initialiser des armes et de l'armure
 	 */
 	public void init_v2() {
 		init_v1();
@@ -78,7 +83,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode permettant d'initialiser les armes
+	 * methode permettant d'initialiser les armes, de l'armure et un Lycanthrope
 	 */
 	public void init_v3() {
 		init_v2();
@@ -86,7 +91,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode permettant d'initialiser les buffs
+	 * methode permettant d'initialiser des armes, de l'armure et des buffs
 	 */
 	public void init_v4() {
 		init_v2();
@@ -96,7 +101,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode permettant d'initialiser un consommable
+	 * methode permettant d'initialiser et de setter un consommable, des armes et de l'armure
 	 */
 	public void init_v5() {
 		title();
@@ -132,7 +137,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode permettant d'afficher le gagnant du combat
+	 * methode permettant d'afficher le gagnant du combat en console
 	 */
 	private void getWinner(lsg.characters.Character heros, lsg.characters.Character monstre) {
 		System.out.println("---" + (heros.getLife() > 0 && heros.getStamina() > 0 ? heros.getName() : monstre.getName())
@@ -140,7 +145,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode initialisant la partie & lancant le combat
+	 * methode initialisant la partie et lancant le combat
 	 */
 	public void play_v1() {
 		init_v1();
@@ -148,7 +153,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode equipant le heros avec une armure & lancant le combat
+	 * methode equipant le heros avec une armure et lancant le combat
 	 */
 	public void play_v2() {
 		init_v2();
@@ -156,7 +161,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode equipant le heros avec une armure & lancant le combat
+	 * methode equipant le heros avec une armure et lancant le combat
 	 */
 	public void play_v3() {
 		init_v3();
@@ -164,7 +169,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode equipant les personnages avec des buffs & lancant le combat
+	 * methode equipant les personnages avec des buffs et lancant le combat
 	 */
 	public void play_v4() {
 		init_v4();
@@ -172,7 +177,7 @@ public class LearningSoulsGame {
 	}
 
 	/**
-	 * methode equipant les personnages avec des buffs & lancant le combat
+	 * methode equipant les personnages avec des buffs et lancant le combat
 	 */
 	public void play_v5() {
 		init_v5();
@@ -342,6 +347,9 @@ public class LearningSoulsGame {
 
 	}
 
+	/**
+	 * methode permettant de tester toutes les methodes du tp5
+	 */
 	private void testFinTP5() {
 		
 		title();
@@ -481,6 +489,9 @@ public class LearningSoulsGame {
 
 	}
 	
+	/**
+	 * methode permettant de tester les exceptions
+	 */
 	public void testExceptions() {
 		//maxiHeros.setWeapon(null);
 		//maxiHeros.setWeapon(new Weapon("Pelle cassee", 0, 100, 2, 0));

@@ -10,6 +10,11 @@ import lsg.consumables.food.Americain;
 import lsg.consumables.food.Hamburger;
 import lsg.consumables.repair.RepairKit;
 
+/**
+ * classe MenuBestOfV1 servant de classe de test des methodes de la classe Consumable et de ses classes filles
+ * @author jenni
+ *
+ */
 public class MenuBestOfV4 extends LinkedHashSet<Consumable> {
 	
 	public void init() {

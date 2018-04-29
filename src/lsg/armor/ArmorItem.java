@@ -2,6 +2,11 @@ package lsg.armor;
 
 import lsg.bags.Collectible;
 
+/** 
+ * Classe ArmorItem de type COllectible qui donne de l'armure
+ * @author jenni
+ *
+ */
 public class ArmorItem implements Collectible {
 
 	/** 
@@ -14,7 +19,9 @@ public class ArmorItem implements Collectible {
 	protected float armorValue;
 
    /**
-    * constructeur a 2 parametres permettant de nommer et fixer la valeur d'armure d'une piece lors de son instanciation
+    * permet de nommer et fixer la valeur d'armure d'une piece lors de son instanciation
+    * @param name nom de l'armure
+    * @param armorValue valeur de l'armure
     */
 	public ArmorItem(String name, float armorValue) {
 		this.name = name;
@@ -22,14 +29,14 @@ public class ArmorItem implements Collectible {
 	}
 
 	/**
-	 * accesseur public en lecture
+	 * @return name nom de l'armure
 	 */
 	public String getName() {
 		return name;
 	}
 	
 	/**
-	 * accesseur public en lecture
+	 * @return armorValue valeur de l'armure
 	 */
 	public float getArmorValue() {
 		return armorValue;
@@ -37,14 +44,14 @@ public class ArmorItem implements Collectible {
 	
 	/**
 	 * methode retournant les statistiques d'une armure
-	 * @return String
+	 * @return String de type "nom de l'armure (valeur de l'armure)"
 	 */
 	public String toString() {
 		return this.getName() + "(" + this.getArmorValue() + ")";
 	}
 	
 	/**
-	 * methode affichant les statistiques d'une armure
+	 * methode affichant les statistiques d'une armure en console
 	 */
 	public void printStats() {
 		System.out.println(this.toString());
@@ -52,7 +59,7 @@ public class ArmorItem implements Collectible {
 
 	
 	/**
-	 * methode affichant le poids d'une armure
+	 * @return 4 poids de l'armure (4kg)
 	 */
 	@Override
 	public int getWeight() {

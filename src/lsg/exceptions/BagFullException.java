@@ -2,6 +2,10 @@ package lsg.exceptions;
 
 import lsg.bags.Bag;
 
+/**
+* If a bag is full, then a BagFullException will be thrown.
+* @author jenni
+*/
 public class BagFullException extends Exception {
 	
 	private Bag bag;
@@ -10,9 +14,9 @@ public class BagFullException extends Exception {
 		super(bag.getClass().getSimpleName() + " is full !");
 		this.bag = bag;
 	}
+	
 	/**
-	 * accesseur
-	 * @return bag concerne
+	 * @return bag sac concerne
 	 */
 	public Bag getBag() {
 		return bag;
